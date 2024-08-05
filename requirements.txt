@@ -1,6 +1,12 @@
 asgiref==3.8.1
+click==8.1.7
 Django==4.2.14
 django-cors-headers==4.4.0
 djangorestframework==3.15.2
+joblib==1.4.2
+nltk==3.8.1
+regex==2024.7.24
 sqlparse==0.5.1
+textblob==0.18.0.post0
+tqdm==4.66.5
 typing_extensions==4.12.2
