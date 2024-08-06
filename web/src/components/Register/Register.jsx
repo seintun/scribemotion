@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import axiosInstance from "../../utils/axiosUtil";
 import { TextField, Button, Typography, Container, Box } from "@mui/material";
+
+import axiosInstance from "../../utils/axiosUtil";
+import { useSnackbar } from "../../components/SnackbarContext/SnackbarContext";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -8,6 +10,8 @@ const Register = () => {
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [message, setMessage] = useState("");
+
+  const { showSuccess, showError } = useSnackbar();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -19,11 +23,14 @@ const Register = () => {
         password2,
       });
       setMessage(response.data.message);
+      showSuccess(response.data.message);
     } catch (error) {
       if (error.response) {
         setMessage(error.response.data.message);
+        showError(error.response.data.message);
       } else {
         setMessage("An error occurred.");
+        showError(error.response.data.message);
       }
     }
   };

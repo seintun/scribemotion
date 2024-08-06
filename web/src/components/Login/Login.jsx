@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import axiosInstance from "../../utils/axiosUtil";
 import { TextField, Button, Container, Typography } from "@mui/material";
+
+import axiosInstance from "../../utils/axiosUtil";
+import { useSnackbar } from "../../components/SnackbarContext/SnackbarContext";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const { showSuccess, showError } = useSnackbar();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -13,9 +17,14 @@ const Login = () => {
         username,
         password,
       });
-      alert("Login successful");
+      showSuccess("Login successful");
     } catch (error) {
-      console.error("There was an error!", error);
+      console.error("There was an error!", error.message);
+      if (error.response) {
+        showError(error.response.data.message);
+      } else {
+        showError("An error occurred.");
+      }
     }
   };
 
