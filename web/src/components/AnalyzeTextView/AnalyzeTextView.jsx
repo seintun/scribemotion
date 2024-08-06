@@ -11,10 +11,10 @@ import axiosInstance from "../../utils/axiosUtil";
 
 import { useSnackbar } from "../SnackbarContext/SnackbarContext";
 
-const AnalyzeTextView: React.FC = () => {
-  const [text, setText] = useState<string>("");
-  const [result, setResult] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+const AnalyzeTextView = () => {
+  const [text, setText] = useState("");
+  const [result, setResult] = useState("");
+  const [loading, setLoading] = useState(false);
   const { showError } = useSnackbar();
 
   const handleSubmit = async () => {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const HelloScribeMotion: React.FC = () => {
-  const [message, setMessage] = useState<string>("");
+const HelloScribeMotion = () => {
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     axios
