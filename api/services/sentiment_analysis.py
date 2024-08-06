@@ -57,7 +57,7 @@ DEFAULT_SCAM_KEYWORDS = [
 ]
 
 
-def detect_scam_score(input_text: str, scam_keywords: list = None) -> float:
+def detect_scam_result(input_text: str, scam_keywords: list = None) -> float:
     """
     Detects the presence of scam-related keywords in a given text and assigns a score from 0 to 10.
 
@@ -89,10 +89,12 @@ def detect_scam_score(input_text: str, scam_keywords: list = None) -> float:
     )
 
     # Identify and collect the scam keywords found in the text
-    identified_scam_words = [word for word in words if scam_pattern.search(word)]
+    identified_scam_words = {
+        "keywords": [word for word in words if scam_pattern.search(word)]
+    }
 
     # Count the number of scam keywords found in the text
-    match_count = len(identified_scam_words)
+    match_count = len(identified_scam_words["keywords"])
 
     # Calculate the scam score (0-10) based on the number of matches
     max_score = 10
@@ -126,20 +128,24 @@ def analyze_sentiment(input_text: str):
         Example:
         ```
         {
-            "sentiment": {"positive": 7.5, "neutral": 2.5, "negative": 0},
-            "emotions": [("joy", 2), ("fear", 1)],
-            "matching_words": {"joy": ["happy", "excited"], "fear": ["scared"]},
-            "scam_score": 3.0
+            "sentiment": {"positive": 2.34, "negative": 0},
+            "subjective": true,
+            "emotions": [["happy", 11]],
+            "matching_words": {"happy": ["marvelous", "thrilled", "fortunate", "victorious", "grateful", "jubilant", "enthusiastic", "lucky", "assured", "determined", "ecstatic"]},
+            "scam": {
+                "score": 6.69141894960796,
+                "matching_words": ["limited", "winner", "prize", "offer", "lottery"]
+            },
         }
         ```
     """
     if not input_text.strip():
         return {
             "sentiment": {"positive": 0, "neutral": 0, "negative": 0},
+            "subjective": False,
             "emotions": [],
             "matching_words": {},
             "scam_score": 0.0,
-            "subjective": False,
         }
 
     # Process the text using TextBlob
@@ -190,15 +196,15 @@ def analyze_sentiment(input_text: str):
     }
 
     # Calculate scam score
-    scam_score = detect_scam_score(input_text)
+    scam_result = detect_scam_result(input_text)
 
     return {
         "sentiment": sentiment_score,
+        "subjective": subjective,
         "emotions": top_5_emotions,
         "matching_words": matching_words,
         "scam": {
-            "score": scam_score[0],
-            "keywords": scam_score[1],
+            "score": scam_result[0],
+            "matching_words": scam_result[1],
         },
-        "subjective": subjective,
     }
