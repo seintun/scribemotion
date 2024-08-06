@@ -4,8 +4,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-const ActionMenuButton = ({ menuItems = [] }) => {
-  console.log(menuItems);
+const ActionMenuButton = ({ menuItems = [], onMenuItemClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleMenuOpen = (event) => {
@@ -14,6 +13,13 @@ const ActionMenuButton = ({ menuItems = [] }) => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleMenuItemClick = (item) => {
+    if (onMenuItemClick) {
+      onMenuItemClick(item);
+    }
+    handleMenuClose();
   };
 
   return (
@@ -27,7 +33,7 @@ const ActionMenuButton = ({ menuItems = [] }) => {
         onClose={handleMenuClose}
       >
         {menuItems.map((item, index) => (
-          <MenuItem key={index} onClick={handleMenuClose}>
+          <MenuItem key={index} onClick={() => handleMenuItemClick(item)}>
             {item}
           </MenuItem>
         ))}

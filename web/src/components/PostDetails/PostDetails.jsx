@@ -10,19 +10,14 @@ import { red } from "@mui/material/colors";
 import ReactionButtons from "./ReactionButtons";
 import ActionMenuButton from "./ActionMenuButton";
 
-const PostDetails = ({ title, subheader, text, menuItems, avatar }) => {
-  const handleMenuItemClick = (menuItem) => {
-    if (menuItem === "Analyze") {
-      performSentimentAnalysis(text);
-    }
-  };
-
-  const performSentimentAnalysis = (text) => {
-    // Placeholder for sentiment analysis logic
-    console.log("Performing sentiment analysis on:", text);
-    // You can replace this with actual sentiment analysis API call
-  };
-
+const PostDetails = ({
+  title,
+  subheader,
+  text,
+  menuItems,
+  avatar,
+  onMenuItemClick,
+}) => {
   return (
     <Card sx={{ maxWidth: 900 }}>
       <CardHeader
@@ -30,7 +25,7 @@ const PostDetails = ({ title, subheader, text, menuItems, avatar }) => {
         action={
           <ActionMenuButton
             menuItems={menuItems}
-            onMenuItemClick={handleMenuItemClick}
+            onMenuItemClick={onMenuItemClick}
           />
         }
         title={title}

@@ -19,7 +19,7 @@ const Post = () => {
   const { showSuccess, showError } = useSnackbar();
 
   // Function to handle text analysis
-  const analyzeText = async () => {
+  const analyzeText = async (text) => {
     setLoading(true);
     try {
       const response = await axiosInstance.post("/analyze-sentiment/", {
@@ -39,6 +39,15 @@ const Post = () => {
     }
   };
 
+  // Handle menu item click
+  const handleMenuItemClick = (menuItem) => {
+    if (menuItem === "Analyze") {
+      console.log("Analyze clicked", postDetails.text);
+      analyzeText(postDetails.text);
+    }
+    // Handle other menu items if needed
+  };
+
   return (
     <div>
       <h1>Post Container</h1>
@@ -49,7 +58,7 @@ const Post = () => {
         loading={loading}
         handleSubmit={analyzeText}
       />
-      <PostDetails {...postDetails} />
+      <PostDetails {...postDetails} onMenuItemClick={handleMenuItemClick} />
     </div>
   );
 };
