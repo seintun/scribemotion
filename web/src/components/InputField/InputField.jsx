@@ -1,13 +1,7 @@
 import React from "react";
-import {
-  TextField,
-  Button,
-  Container,
-  Typography,
-  CircularProgress,
-} from "@mui/material";
+import { TextField, Button, Container } from "@mui/material";
 
-const AnalyzeText = ({ text, setText, result, loading, handleSubmit }) => {
+const InputField = ({ text, setText, result, loading, handleSubmit }) => {
   return (
     <Container>
       <TextField
@@ -26,14 +20,8 @@ const AnalyzeText = ({ text, setText, result, loading, handleSubmit }) => {
       >
         Submit
       </Button>
-      {loading && <CircularProgress />}
-      {result && (
-        <Typography variant="body1" marginTop="20px">
-          {typeof result === "string" ? result : JSON.stringify(result)}
-        </Typography>
-      )}
     </Container>
   );
 };
 
-export default AnalyzeText;
+export default InputField;

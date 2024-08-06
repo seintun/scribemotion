@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import axiosInstance from "../../utils/axiosUtil";
 import Paper from "@mui/material/Paper";
-import { AnalyzeResult, AnalyzeText } from "../../components/AnalyzeText";
+import { AnalyzeResult } from "../../components/AnalyzeText";
 import { PostDetails } from "../../components/PostDetails";
+import { InputField } from "../../components/InputField";
 import { useSnackbar } from "../../components/SnackbarContext/SnackbarContext";
 
 const PostPage = () => {
@@ -52,13 +53,7 @@ const PostPage = () => {
   return (
     <Paper elevation={3} sx={{ padding: 2 }}>
       <h1>Post Container</h1>
-      <AnalyzeText
-        text={text}
-        setText={setText}
-        result={analysis}
-        loading={loading}
-        handleSubmit={analyzeText}
-      />
+      <InputField text={text} setText={setText} handleSubmit={analyzeText} />
       <PostDetails {...postDetails} onMenuItemClick={handleMenuItemClick} />
       <AnalyzeResult result={analysis} />
     </Paper>
