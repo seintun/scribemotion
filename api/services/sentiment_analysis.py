@@ -135,7 +135,7 @@ def analyze_sentiment(input_text: str):
     """
     if not input_text.strip():
         return {
-            "sentiment": {"positive": 0, "neutral": 10, "negative": 0},
+            "sentiment": {"positive": 0, "neutral": 0, "negative": 0},
             "emotions": [],
             "matching_words": {},
             "scam_score": 0.0,
@@ -150,11 +150,9 @@ def analyze_sentiment(input_text: str):
     # Normalize the polarity score to a 0-10 scale
     positive_score = round(max(0, sentiment.polarity) * 10, 2)
     negative_score = round(max(0, -sentiment.polarity) * 10, 2)
-    neutral_score = round(10 - abs(sentiment.polarity) * 10, 2)
 
     sentiment_score = {
         "positive": positive_score,
-        "neutral": neutral_score,
         "negative": negative_score,
     }
 
