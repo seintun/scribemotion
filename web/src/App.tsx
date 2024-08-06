@@ -1,5 +1,5 @@
 import React from "react";
-import HelloScribeMotion from "./HelloScribemotion";
+import HelloScribeMotion from "./components/HelloScribemotion";
 
 const App: React.FC = () => {
   return (
