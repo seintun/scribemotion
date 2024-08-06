@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import { Snackbar, Alert, AlertColor } from "@mui/material";
+import { Snackbar, Alert } from "@mui/material";
 
 // Create a context for the Snackbar
 const SnackbarContext = createContext(undefined);
@@ -52,7 +52,7 @@ export const SnackbarProvider = ({ children }) => {
       >
         <Alert
           onClose={handleClose}
-          severity={snackbarSeverity as AlertColor}
+          severity={snackbarSeverity}
           sx={{ width: "100%" }}
         >
           {snackbarMessage}
