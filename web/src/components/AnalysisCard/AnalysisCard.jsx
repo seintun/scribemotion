@@ -93,7 +93,7 @@ const card = (
   </>
 );
 
-export default function OutlinedCard({ result }) {
+const AnalysisCard = ({ result }) => {
   // Expanded state to show/hide the card when the result is available
   const [expanded, setExpanded] = useState(false);
 
@@ -118,4 +118,6 @@ export default function OutlinedCard({ result }) {
       </Collapse>
     </Box>
   );
-}
+};
+
+export default AnalysisCard;
