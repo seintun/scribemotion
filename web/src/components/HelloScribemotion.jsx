@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../utils/axiosUtil";
 
 const HelloScribeMotion = () => {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/api/hello-scribemotion/")
+    axiosInstance
+      .get("/hello-scribemotion/")
       .then((response) => {
         setMessage(response.data.message);
       })
@@ -18,7 +18,7 @@ const HelloScribeMotion = () => {
   return (
     <div>
       <h1>Hello, ScribeMotion!</h1>
-      <p>API message: {message}</p>
+      <p>Message from API: {message}</p>
     </div>
   );
 };

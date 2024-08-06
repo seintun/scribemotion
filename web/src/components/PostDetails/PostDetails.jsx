@@ -19,7 +19,7 @@ const PostDetails = ({
   onMenuItemClick,
 }) => {
   return (
-    <Card sx={{ maxWidth: 900 }}>
+    <Card sx={{ margin: 3, padding: 3 }}>
       <CardHeader
         avatar={<Avatar sx={{ bgcolor: red[500] }}>{avatar}</Avatar>}
         action={
