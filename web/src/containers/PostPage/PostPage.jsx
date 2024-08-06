@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import axiosInstance from "../../utils/axiosUtil";
+import Paper from "@mui/material/Paper";
 import { AnalyzeText } from "../../components/AnalyzeText";
 import { PostDetails } from "../../components/PostDetails";
 import { useSnackbar } from "../../components/SnackbarContext/SnackbarContext";
 
-const Post = () => {
+const PostPage = () => {
   const [text, setText] = useState("");
   const [analysis, setAnalysis] = useState(null);
   const [postDetails, setPostDetails] = useState({
@@ -49,7 +50,7 @@ const Post = () => {
   };
 
   return (
-    <div>
+    <Paper elevation={3} sx={{ padding: 2 }}>
       <h1>Post Container</h1>
       <AnalyzeText
         text={text}
@@ -59,8 +60,8 @@ const Post = () => {
         handleSubmit={analyzeText}
       />
       <PostDetails {...postDetails} onMenuItemClick={handleMenuItemClick} />
-    </div>
+    </Paper>
   );
 };
 
-export default Post;
+export default PostPage;

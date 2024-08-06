@@ -1,13 +1,13 @@
 import React from "react";
 import { SnackbarProvider } from "./components/SnackbarContext/SnackbarContext";
 import HelloScribeMotion from "./components/HelloScribemotion";
-import { Post as PostContainer } from "./containers/Post";
+import { PostPage } from "./containers/PostPage";
 
 const App: React.FC = () => {
   return (
     <SnackbarProvider>
       <HelloScribeMotion />
-      <PostContainer />
+      <PostPage />
     </SnackbarProvider>
   );
 };
