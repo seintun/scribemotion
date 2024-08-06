@@ -1,10 +1,15 @@
+import os
 import re
 import json
 import math
 from textblob import TextBlob
 
+# Get the absolute path to the emotions.json file
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+emotions_file_path = os.path.join(BASE_DIR, "services/data/emotions.json")
+
 # Load the EMOTIONS dictionary from the JSON file
-with open("emotions.json", "r", encoding="utf-8") as json_file:
+with open(emotions_file_path, "r", encoding="utf-8") as json_file:
     emotions_list = json.load(json_file)
 
 # Default list of scam-related keywords

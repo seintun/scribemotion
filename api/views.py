@@ -2,7 +2,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from utils.sentiment_analysis import analyze_sentiment
+from api.services.sentiment_analysis import analyze_sentiment
 
 
 @api_view(["GET"])
