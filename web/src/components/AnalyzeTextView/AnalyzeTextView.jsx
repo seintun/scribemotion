@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   TextField,
   Button,
@@ -7,7 +8,6 @@ import {
   CircularProgress,
 } from "@mui/material";
 import axiosInstance from "../../utils/axiosUtil";
-import axios from "axios";
 
 import { useSnackbar } from "../SnackbarContext/SnackbarContext";
 
@@ -43,7 +43,7 @@ const AnalyzeTextView: React.FC = () => {
         variant="outlined"
         fullWidth
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(event) => setText(event.target.value)}
         margin="normal"
       />
       <Button

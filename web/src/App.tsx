@@ -1,7 +1,7 @@
 import React from "react";
 import { SnackbarProvider } from "./components/SnackbarContext/SnackbarContext";
-import HelloScribeMotion from "./components/HelloScribemotion";
 import { AnalyzeTextView } from "./components/AnalyzeTextView";
+import HelloScribeMotion from "./components/HelloScribemotion";
 
 const App: React.FC = () => {
   return (
