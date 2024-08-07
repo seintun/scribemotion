@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axiosInstance from "../utils/axiosUtil";
+import axiosInstance from "../utils/axiosUtils";
 
 const HelloScribeMotion = () => {
   const [message, setMessage] = useState("");

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axiosInstance from "../utils/axiosUtil";
+import axiosInstance from "../utils/axiosUtils";
 import { useSnackbar } from "../components/SnackbarContext";
 
 /**

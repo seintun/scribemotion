@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import axios from "axios";
-import axiosInstance from "../../utils/axiosUtil";
 import Paper from "@mui/material/Paper";
 import { AnalysisCard } from "../../components/AnalysisCard";
 import { PostDetails } from "../../components/PostDetails";
 import { InputField } from "../../components/InputField";
-import { useSnackbar } from "../../components/SnackbarContext";
+import useApi from "../../hooks/useApi";
 
 const PostPage = () => {
   const [text, setText] = useState("");
-  const [analysis, setAnalysis] = useState(null);
   const [postDetails, setPostDetails] = useState({
     title: "Post Title",
     subheader: "08/01/2024",
@@ -17,45 +14,29 @@ const PostPage = () => {
     avatar: "A",
     menuItems: ["Analyze", "Edit", "Delete"],
   });
-  const [loading, setLoading] = useState(false);
-  const { showSuccess, showError } = useSnackbar();
 
-  // Function to handle text analysis
-  const analyzeText = async (text) => {
-    setLoading(true);
-    try {
-      const response = await axiosInstance.post("/analyze-sentiment/", {
-        text,
-      });
-      setAnalysis(response.data);
-      showSuccess("Sentiment analysis complete");
-    } catch (error) {
-      console.error("Error analyzing sentiment:", error);
-      if (axios.isAxiosError(error) && error.response) {
-        showError(`Error: ${error.response.data.error || error.response.data}`);
-      } else {
-        showError("Error analyzing sentiment");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data, callApi: analyzeSentiment } = useApi(
+    "/analyze-sentiment/",
+    "post"
+  );
 
   // Handle menu item click
   const handleMenuItemClick = (menuItem) => {
     if (menuItem === "Analyze") {
-      console.log("Analyze clicked", postDetails.text);
-      analyzeText(postDetails.text);
+      analyzeSentiment({ text: postDetails.text });
     }
-    // Handle other menu items if needed
   };
 
   return (
     <Paper elevation={3} sx={{ margin: 2, padding: 2 }}>
       <h1>Post Container</h1>
-      <InputField text={text} setText={setText} handleSubmit={analyzeText} />
+      <InputField
+        text={text}
+        setText={setText}
+        handleSubmit={analyzeSentiment}
+      />
       <PostDetails {...postDetails} onMenuItemClick={handleMenuItemClick} />
-      <AnalysisCard result={analysis} />
+      <AnalysisCard result={data} />
     </Paper>
   );
 };
