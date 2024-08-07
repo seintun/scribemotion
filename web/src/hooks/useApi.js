@@ -28,7 +28,6 @@ const useApi = (endpoint, method = "get") => {
         try {
             const response = await axiosInstance[method](endpoint, payload);
             setData(response.data);
-            showSuccess("Request successful");
         } catch (error) {
             console.error(`API call error: ${error.message}`);
             showError(`API call error: ${error.message}`);

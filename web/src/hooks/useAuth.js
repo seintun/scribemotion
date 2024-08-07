@@ -2,6 +2,7 @@ import { useState } from "react";
 import axiosInstance from "../utils/axiosUtils";
 import { useSnackbar } from "../components/SnackbarContext";
 import { useAuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 /**
  * @description Custom hook to handle user authentication.
@@ -17,6 +18,7 @@ const useAuth = () => {
     currentUser,
     setCurrentUser
   } = useAuthContext();
+  const navigate = useNavigate();
 
   const handleError = (error) => {
     const errorMessage = error.response?.data?.message || "An error occurred.";
@@ -50,6 +52,7 @@ const useAuth = () => {
       setIsLoggedIn(true);
       setCurrentUser(data.data.username);
       showSuccess(`Welcome back, ${data.data.username}!`);
+      navigate("/");
     } catch (error) {
       handleError(error);
     }
