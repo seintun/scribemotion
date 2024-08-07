@@ -117,9 +117,12 @@ def sentiment_analysis_view(request):
 @api_view(["GET"])
 def all_posts_view(request):
     """
-    A view function that returns all posts.
+    A view function that returns posts in a paginated manner
     """
-    posts = Post.objects.all()
+    offset = int(request.GET.get("offset", 0))
+    limit = int(request.GET.get("limit", 5))
 
+    posts = Post.objects.all()[offset : offset + limit]
     posts = posts.values()
+
     return Response(posts, status=status.HTTP_200_OK)

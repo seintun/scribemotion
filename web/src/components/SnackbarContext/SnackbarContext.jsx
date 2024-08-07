@@ -45,7 +45,7 @@ export const SnackbarProvider = ({ children }) => {
     <SnackbarContext.Provider value={{ showError, showSuccess }}>
       {children}
       <Snackbar
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         open={snackbarOpen}
         autoHideDuration={8000}
         onClose={handleClose}
