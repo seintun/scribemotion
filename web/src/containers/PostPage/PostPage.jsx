@@ -20,7 +20,11 @@ const PostPage = ({ initialPostDetails }) => {
 
   return (
     <>
-      <PostDetails {...postDetails} onMenuItemClick={handleMenuItemClick} />
+      <PostDetails
+        {...postDetails}
+        menuItems={["Analyze", "Edit", "Delete"]}
+        onMenuItemClick={handleMenuItemClick}
+      />
       <AnalysisCard result={data} />
     </>
   );

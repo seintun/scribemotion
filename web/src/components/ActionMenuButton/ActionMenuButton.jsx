@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
+import { MoreVert as MoreVertIcon } from "@mui/icons-material";
 
 const ActionMenuButton = ({ menuItems = [], onMenuItemClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -24,7 +22,7 @@ const ActionMenuButton = ({ menuItems = [], onMenuItemClick }) => {
 
   return (
     <>
-      <IconButton onClick={handleMenuOpen}>
+      <IconButton onClick={handleMenuOpen} disabled={menuItems.length === 0}>
         <MoreVertIcon />
       </IconButton>
       <Menu
@@ -32,11 +30,17 @@ const ActionMenuButton = ({ menuItems = [], onMenuItemClick }) => {
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        {menuItems.map((item, index) => (
-          <MenuItem key={index} onClick={() => handleMenuItemClick(item)}>
-            {item}
-          </MenuItem>
-        ))}
+        {menuItems.length === 0 ? (
+          <Tooltip title="No actions available">
+            <MenuItem disabled>No actions available</MenuItem>
+          </Tooltip>
+        ) : (
+          menuItems.map((item, index) => (
+            <MenuItem key={index} onClick={() => handleMenuItemClick(item)}>
+              {item}
+            </MenuItem>
+          ))
+        )}
       </Menu>
     </>
   );

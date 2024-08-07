@@ -9,17 +9,24 @@ import {
 } from "@mui/material";
 import { red } from "@mui/material/colors";
 
-import ReactionButtons from "./ReactionButtons";
-import ActionMenuButton from "./ActionMenuButton";
+import { ActionMenuButton } from "../ActionMenuButton";
+import { ReactionButtons } from "../ReactionButtons";
 
-const PostDetails = ({ title, subheader, text, avatar, onMenuItemClick }) => {
+const PostDetails = ({
+  title,
+  subheader,
+  text,
+  avatar,
+  menuItems,
+  onMenuItemClick,
+}) => {
   return (
     <Card sx={{ margin: 3, padding: 3 }}>
       <CardHeader
         avatar={<Avatar sx={{ bgcolor: red[500] }}>{avatar}</Avatar>}
         action={
           <ActionMenuButton
-            menuItems={["Analyze", "Edit", "Delete"]}
+            menuItems={menuItems}
             onMenuItemClick={onMenuItemClick}
           />
         }
