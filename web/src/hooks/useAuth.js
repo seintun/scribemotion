@@ -9,6 +9,16 @@ const useAuth = () => {
   const [message, setMessage] = useState("");
   const { showSuccess, showError } = useSnackbar();
 
+  const handleError = (error) => {
+    if (error.response) {
+      setMessage(error.response.data.message);
+      showError(error.response.data.message);
+    } else {
+      setMessage("An error occurred.");
+      showError("An error occurred.");
+    }
+  };
+
   const register = async (username, email, password1, password2) => {
     try {
       const response = await axiosInstance.post("/register/", {
@@ -20,13 +30,7 @@ const useAuth = () => {
       setMessage(response.data.message);
       showSuccess(response.data.message);
     } catch (error) {
-      if (error.response) {
-        setMessage(error.response.data.message);
-        showError(error.response.data.message);
-      } else {
-        setMessage("An error occurred.");
-        showError("An error occurred.");
-      }
+      handleError(error);
     }
   };
 
@@ -39,13 +43,7 @@ const useAuth = () => {
       setMessage(response.data.message);
       showSuccess(response.data.message);
     } catch (error) {
-      if (error.response) {
-        setMessage(error.response.data.message);
-        showError(error.response.data.message);
-      } else {
-        setMessage("An error occurred.");
-        showError("An error occurred.");
-      }
+      handleError(error);
     }
   };
 
@@ -55,13 +53,7 @@ const useAuth = () => {
       setMessage(response.data.message);
       showSuccess(response.data.message);
     } catch (error) {
-      if (error.response) {
-        setMessage(error.response.data.message);
-        showError(error.response.data.message);
-      } else {
-        setMessage("An error occurred.");
-        showError("An error occurred.");
-      }
+      handleError(error);
     }
   };
 
