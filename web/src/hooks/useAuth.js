@@ -12,25 +12,22 @@ const useAuth = () => {
   const { showSuccess, showError } = useSnackbar();
 
   const handleError = (error) => {
-    if (error.response) {
-      setMessage(error.response.data.message);
-      showError(error.response.data.message);
-    } else {
-      setMessage("An error occurred.");
-      showError("An error occurred.");
-    }
+    const errorMessage = error.response?.data?.message || "An error occurred.";
+    console.error(errorMessage, message);
+    setMessage(errorMessage);
+    showError(errorMessage);
   };
 
   const register = async (username, email, password1, password2) => {
     try {
-      const response = await axiosInstance.post("/register/", {
+      const { data } = await axiosInstance.post("/register/", {
         username,
         email,
         password1,
         password2,
       });
-      setMessage(response.data.message);
-      showSuccess(response.data.message);
+      setMessage(data.message);
+      showSuccess(data.message);
     } catch (error) {
       handleError(error);
     }
@@ -38,12 +35,12 @@ const useAuth = () => {
 
   const login = async (username, password) => {
     try {
-      const response = await axiosInstance.post("/login/", {
+      const { data } = await axiosInstance.post("/login/", {
         username,
         password,
       });
-      setMessage(response.data.message);
-      showSuccess(response.data.message);
+      setMessage(data.message);
+      showSuccess(data.message);
     } catch (error) {
       handleError(error);
     }
@@ -51,9 +48,9 @@ const useAuth = () => {
 
   const logout = async () => {
     try {
-      const response = await axiosInstance.post("/logout/");
-      setMessage(response.data.message);
-      showSuccess(response.data.message);
+      const { data } = await axiosInstance.post("/logout/");
+      setMessage(data.message);
+      showSuccess(data.message);
     } catch (error) {
       handleError(error);
     }
