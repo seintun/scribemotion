@@ -118,7 +118,7 @@ const AnalysisCard = ({ result, onDismiss }) => {
   }
 
   return (
-    <Box sx={{ margin: 3 }}>
+    <Box sx={{ margin: 2 }}>
       <Slide direction="left" in={expanded} mountOnEnter unmountOnExit>
         <Card variant="outlined">{card(result, handleClose)}</Card>
       </Slide>
