@@ -8,6 +8,7 @@ import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
+import { grey } from "@mui/material/colors";
 import AnalysisInfo from "./AnalysisInfo";
 
 /**
@@ -40,7 +41,7 @@ const card = (
   handleClose
 ) => (
   <>
-    <CardContent>
+    <CardContent sx={{ bgcolor: grey[100] }}>
       <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
         Analysis Result
       </Typography>
@@ -63,7 +64,7 @@ const card = (
       <Grid container spacing={2}>
         <AnalysisInfo title="Emotions" data={emotions} color="secondary" />
         <AnalysisInfo
-          title="Matching Emotion Words"
+          title="Keywords matched"
           data={matching_words}
           isObject
           color="default"
@@ -77,7 +78,7 @@ const card = (
           color="error"
         />
         <AnalysisInfo
-          title="Matching Scam Words"
+          title="Keywords matched"
           data={scam.matching_words}
           isObject
           color="default"
