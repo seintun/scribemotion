@@ -1,3 +1,5 @@
-export { default as PostDetails } from "./PostDetails";
-export { default as ActionMenuButton } from "./ActionMenuButton";
-export { default as ReactionButtons } from "./ReactionButtons";
+import PostDetails from "./PostDetails";
+import ActionMenuButton from "./ActionMenuButton";
+import ReactionButtons from "./ReactionButtons";
+
+export { PostDetails, ActionMenuButton, ReactionButtons };

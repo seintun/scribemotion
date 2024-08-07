@@ -7,6 +7,7 @@ import {
   Typography,
   IconButton,
   Button,
+  useMediaQuery,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -20,6 +21,7 @@ import { useAuthContext } from "../../context/AuthContext";
 import useAuth from "../../hooks/useAuth";
 
 const MenuAppBar = () => {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const { isLoggedIn } = useAuthContext();
   const { logout } = useAuth();
 
@@ -35,7 +37,7 @@ const MenuAppBar = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            ScribeMotion - Describe Your Emotions
+            ScribeMotion
           </Typography>
           {!isLoggedIn && (
             <>
@@ -45,7 +47,7 @@ const MenuAppBar = () => {
                 to="/login"
                 startIcon={<LoginIcon />}
               >
-                Login
+                {!isMobile && "Login"}
               </Button>
               <Button
                 color="inherit"
@@ -53,7 +55,7 @@ const MenuAppBar = () => {
                 to="/register"
                 startIcon={<PersonAddIcon />}
               >
-                Register
+                {!isMobile && "Register"}
               </Button>
             </>
           )}
@@ -65,7 +67,7 @@ const MenuAppBar = () => {
                 color="inherit"
                 startIcon={<AccountCircle />}
               >
-                Profile
+                {!isMobile && "Profile"}
               </Button>
               <Button
                 size="large"
@@ -73,7 +75,7 @@ const MenuAppBar = () => {
                 color="inherit"
                 startIcon={<LogoutIcon />}
               >
-                Logout
+                {!isMobile && "Logout"}
               </Button>
             </>
           )}

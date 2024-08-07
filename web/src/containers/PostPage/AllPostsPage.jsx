@@ -1,36 +1,18 @@
 import React, { useEffect, useState } from "react";
-import Paper from "@mui/material/Paper";
-import CircularProgress from "@mui/material/CircularProgress";
+import { LinearProgress, Paper, Typography } from "@mui/material";
 import PostPage from "./PostPage";
-import axiosInstance from "../../utils/axiosUtils";
+import useApi from "../../hooks/useApi";
+import { EmptyPage } from "../../components/EmptyPage";
 
 const AllPostsPage = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { loading, data, callApi: fetchAllPosts } = useApi("/posts", "get");
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosInstance.get("/posts/");
-        setData(response.data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    fetchAllPosts();
   }, []);
 
-  if (loading) {
-    return <CircularProgress />;
-  }
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+  if (loading) return <LinearProgress color="secondary" />;
+  if (!data || data.length === 0) return <EmptyPage />;
 
   return (
     <Paper elevation={3} sx={{ margin: 2, padding: 2 }}>

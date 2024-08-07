@@ -1,2 +1,4 @@
-export { default as AnalysisCard } from "./AnalysisCard";
-export { default as AnalysisInfo } from "./AnalysisInfo";
+import AnalysisCard from "./AnalysisCard";
+import AnalysisInfo from "./AnalysisInfo";
+
+export { AnalysisCard, AnalysisInfo };
