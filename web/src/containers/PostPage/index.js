@@ -1,1 +1,4 @@
-export { default as PostPage } from "./PostPage";
+import AllPostsPage from './AllPostsPage';
+import PostPage from './PostPage';
+
+export { AllPostsPage, PostPage };

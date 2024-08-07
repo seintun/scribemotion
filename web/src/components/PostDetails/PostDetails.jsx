@@ -10,21 +10,14 @@ import { red } from "@mui/material/colors";
 import ReactionButtons from "./ReactionButtons";
 import ActionMenuButton from "./ActionMenuButton";
 
-const PostDetails = ({
-  title,
-  subheader,
-  text,
-  menuItems,
-  avatar,
-  onMenuItemClick,
-}) => {
+const PostDetails = ({ title, subheader, text, avatar, onMenuItemClick }) => {
   return (
     <Card sx={{ margin: 3, padding: 3 }}>
       <CardHeader
         avatar={<Avatar sx={{ bgcolor: red[500] }}>{avatar}</Avatar>}
         action={
           <ActionMenuButton
-            menuItems={menuItems}
+            menuItems={["Analyze", "Edit", "Delete"]}
             onMenuItemClick={onMenuItemClick}
           />
         }
