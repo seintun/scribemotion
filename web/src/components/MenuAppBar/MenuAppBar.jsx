@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import {
   AppBar,
@@ -12,6 +12,7 @@ import {
 import {
   Menu as MenuIcon,
   AccountCircle,
+  Deblur as AppIcon,
   Login as LoginIcon,
   Logout as LogoutIcon,
   PersonAdd as PersonAddIcon,
@@ -31,14 +32,21 @@ const MenuAppBar = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            ScribeMotion
-          </Typography>
+          <>
+            <Link to="/" style={linkStyle}>
+              <AppIcon sx={{ mr: 1 }} />
+            </Link>
+            <Link to="/" style={textLinkStyle}>
+              <Typography variant="h6" component="div">
+                {!isMobile && "ScribeMotion"}
+              </Typography>
+            </Link>
+          </>
           {!isLoggedIn && (
             <>
               <Button
@@ -81,10 +89,22 @@ const MenuAppBar = () => {
           )}
         </Toolbar>
       </AppBar>
-      {/* Spacer to prevent content from being hidden behind the AppBar */}
       <Toolbar />
     </Box>
   );
 };
 
 export default MenuAppBar;
+
+const linkStyle = {
+  display: "flex",
+  alignItems: "center",
+  textDecoration: "none",
+  color: "inherit",
+};
+
+const textLinkStyle = {
+  textDecoration: "none",
+  color: "inherit",
+  flexGrow: 1,
+};
