@@ -34,7 +34,7 @@ const useAuth = () => {
         password2,
       });
       setMessage(data.message);
-      showSuccess(data.message);
+      showSuccess(`Welcome to the community, ${data.data.username}!`);
     } catch (error) {
       handleError(error);
     }
@@ -49,7 +49,7 @@ const useAuth = () => {
       setMessage(data.message);
       setIsLoggedIn(true);
       setCurrentUser(data.data.username);
-      showSuccess(data.message);
+      showSuccess(`Welcome back, ${currentUser}!`);
     } catch (error) {
       handleError(error);
     }
@@ -61,7 +61,7 @@ const useAuth = () => {
       setMessage(data.message);
       setIsLoggedIn(false);
       setCurrentUser(null);
-      showSuccess(data.message);
+      showSuccess(`Till next time, ${currentUser}!`);
     } catch (error) {
       handleError(error);
     }

@@ -21,7 +21,7 @@ export const SnackbarProvider = ({ children }) => {
    * @param {string} message - The error message to display.
    */
   const showError = (message) => {
-    setSnackbarMessage(message);
+    setSnackbarMessage(`Uh oh! ${message}`);
     setSnackbarSeverity("error");
     setSnackbarOpen(true);
   };
