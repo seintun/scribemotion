@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { SnackbarProvider } from "./components/SnackbarContext";
+import { MenuAppBar } from "./components/MenuAppBar";
 import { Register } from "./containers/Register";
 import { Login } from "./containers/Login";
 import { PostPage } from "./containers/PostPage";
@@ -10,6 +11,7 @@ const App: React.FC = () => {
   return (
     <SnackbarProvider>
       <Router>
+        <MenuAppBar />
         <Routes>
           <Route path="/" element={<HelloScribeMotion />} />
           <Route path="/register" element={<Register />} />
