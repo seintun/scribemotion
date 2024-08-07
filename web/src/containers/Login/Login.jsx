@@ -1,22 +1,19 @@
 import React, { useState } from "react";
 import { TextField, Button, Container, Typography } from "@mui/material";
-
-import axiosInstance from "../../utils/axiosUtil";
-import { useSnackbar } from "../../components/SnackbarContext/SnackbarContext";
+import { useSnackbar } from "../../components/SnackbarContext";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const { showSuccess, showError } = useSnackbar();
+  const { login } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axiosInstance.post("/login/", {
-        username,
-        password,
-      });
+      await login(username, password);
       showSuccess("Login successful");
     } catch (error) {
       console.error("There was an error!", error.message);
@@ -35,7 +32,7 @@ const Login = () => {
         <TextField
           label="Username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(event) => setUsername(event.target.value)}
           fullWidth
           margin="normal"
         />
@@ -43,7 +40,7 @@ const Login = () => {
           label="Password"
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(event) => setPassword(event.target.value)}
           fullWidth
           margin="normal"
         />

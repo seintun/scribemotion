@@ -1,38 +1,18 @@
 import React, { useState } from "react";
 import { TextField, Button, Typography, Container, Box } from "@mui/material";
-
-import axiosInstance from "../../utils/axiosUtil";
-import { useSnackbar } from "../../components/SnackbarContext/SnackbarContext";
+import useAuth from "../../hooks/useAuth";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
-  const [message, setMessage] = useState("");
 
-  const { showSuccess, showError } = useSnackbar();
+  const { message, register } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const response = await axiosInstance.post("/register/", {
-        username,
-        email,
-        password1,
-        password2,
-      });
-      setMessage(response.data.message);
-      showSuccess(response.data.message);
-    } catch (error) {
-      if (error.response) {
-        setMessage(error.response.data.message);
-        showError(error.response.data.message);
-      } else {
-        setMessage("An error occurred.");
-        showError(error.response.data.message);
-      }
-    }
+    await register(username, email, password1, password2);
   };
 
   return (
@@ -47,7 +27,7 @@ const Register = () => {
               fullWidth
               label="Username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(event) => setUsername(event.target.value)}
             />
           </Box>
           <Box sx={{ mb: 2 }}>
@@ -56,7 +36,7 @@ const Register = () => {
               label="Email"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
             />
           </Box>
           <Box sx={{ mb: 2 }}>
@@ -65,7 +45,7 @@ const Register = () => {
               label="Password"
               type="password"
               value={password1}
-              onChange={(e) => setPassword1(e.target.value)}
+              onChange={(event) => setPassword1(event.target.value)}
             />
           </Box>
           <Box sx={{ mb: 2 }}>
@@ -74,7 +54,7 @@ const Register = () => {
               label="Confirm Password"
               type="password"
               value={password2}
-              onChange={(e) => setPassword2(e.target.value)}
+              onChange={(event) => setPassword2(event.target.value)}
             />
           </Box>
           <Button variant="contained" color="primary" type="submit">

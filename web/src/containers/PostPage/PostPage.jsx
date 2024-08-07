@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import { AnalysisCard } from "../../components/AnalysisCard";
 import { PostDetails } from "../../components/PostDetails";
 import { InputField } from "../../components/InputField";
-import { useSnackbar } from "../../components/SnackbarContext/SnackbarContext";
+import { useSnackbar } from "../../components/SnackbarContext";
 
 const PostPage = () => {
   const [text, setText] = useState("");
