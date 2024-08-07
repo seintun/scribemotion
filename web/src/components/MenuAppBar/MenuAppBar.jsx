@@ -23,7 +23,7 @@ import useAuth from "../../hooks/useAuth";
 
 const MenuAppBar = () => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-  const { isLoggedIn } = useAuthContext();
+  const { isLoggedIn, currentUser } = useAuthContext();
   const { logout } = useAuth();
 
   const handleMenu = (event) => {
@@ -75,7 +75,7 @@ const MenuAppBar = () => {
                 color="inherit"
                 startIcon={<AccountCircle />}
               >
-                {!isMobile && "Profile"}
+                {!isMobile && currentUser}
               </Button>
               <Button
                 size="large"

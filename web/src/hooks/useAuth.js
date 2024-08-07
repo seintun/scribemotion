@@ -11,7 +11,12 @@ import { useAuthContext } from "../context/AuthContext";
 const useAuth = () => {
   const [message, setMessage] = useState("");
   const { showSuccess, showError } = useSnackbar();
-  const { isLoggedIn, setIsLoggedIn } = useAuthContext();
+  const {
+    isLoggedIn,
+    setIsLoggedIn,
+    currentUser,
+    setCurrentUser
+  } = useAuthContext();
 
   const handleError = (error) => {
     const errorMessage = error.response?.data?.message || "An error occurred.";
@@ -43,6 +48,7 @@ const useAuth = () => {
       });
       setMessage(data.message);
       setIsLoggedIn(true);
+      setCurrentUser(data.data.username);
       showSuccess(data.message);
     } catch (error) {
       handleError(error);
@@ -54,6 +60,7 @@ const useAuth = () => {
       const { data } = await axiosInstance.post("/logout/");
       setMessage(data.message);
       setIsLoggedIn(false);
+      setCurrentUser(null);
       showSuccess(data.message);
     } catch (error) {
       handleError(error);
@@ -62,6 +69,7 @@ const useAuth = () => {
 
   return {
     message,
+    currentUser,
     isLoggedIn,
     register,
     login,
