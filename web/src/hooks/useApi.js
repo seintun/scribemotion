@@ -2,6 +2,12 @@ import { useState } from "react";
 import axiosInstance from "../utils/axiosUtils";
 import { useSnackbar } from "../components/SnackbarContext";
 
+/** 
+ * @description Custom hook to call an API endpoint.
+ * @param {string} endpoint - The API endpoint to call.
+ * @param {string} method - The HTTP method to use. `["get", "post", "put", "delete", "patch"]`
+ * @returns {object} An object containing the loading state, data, and a function to call the API.
+ */
 const useApi = (endpoint, method = "get") => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState(null);

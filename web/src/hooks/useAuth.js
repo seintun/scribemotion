@@ -3,7 +3,9 @@ import axiosInstance from "../utils/axiosUtils";
 import { useSnackbar } from "../components/SnackbarContext";
 
 /**
- * Custom hook to handle user authentication.
+ * @description Custom hook to handle user authentication.
+ * @returns {string} message - The message returned from the API.
+ * @returns {object} An object containing the message, register, login, and logout functions.
  */
 const useAuth = () => {
   const [message, setMessage] = useState("");
