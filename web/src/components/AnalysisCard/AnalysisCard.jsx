@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
-import Grid from "@mui/material/Grid";
-import Collapse from "@mui/material/Collapse";
-import Typography from "@mui/material/Typography";
+import {
+  Box,
+  Card,
+  CardActions,
+  CardContent,
+  Button,
+  Divider,
+  Grid,
+  Slide,
+  Typography,
+} from "@mui/material";
 import { grey } from "@mui/material/colors";
 import AnalysisInfo from "./AnalysisInfo";
 
@@ -94,7 +96,7 @@ const card = (
   </>
 );
 
-const AnalysisCard = ({ result }) => {
+const AnalysisCard = ({ result, onDismiss }) => {
   // Expanded state to show/hide the card when the result is available
   const [expanded, setExpanded] = useState(false);
 
@@ -106,6 +108,9 @@ const AnalysisCard = ({ result }) => {
 
   const handleClose = () => {
     setExpanded(false);
+    if (onDismiss) {
+      onDismiss();
+    }
   };
 
   if (!result) {
@@ -114,9 +119,9 @@ const AnalysisCard = ({ result }) => {
 
   return (
     <Box sx={{ margin: 3 }}>
-      <Collapse in={expanded}>
+      <Slide direction="left" in={expanded} mountOnEnter unmountOnExit>
         <Card variant="outlined">{card(result, handleClose)}</Card>
-      </Collapse>
+      </Slide>
     </Box>
   );
 };

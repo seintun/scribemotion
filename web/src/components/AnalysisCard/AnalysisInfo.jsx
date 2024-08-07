@@ -1,8 +1,5 @@
 import React from "react";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Chip from "@mui/material/Chip";
+import { Box, Grid, Typography, Chip } from "@mui/material";
 
 /**
  * This component displays Object based data in a Chip.
@@ -42,7 +39,7 @@ const renderArrayData = (data, color) => {
  */
 const AnalysisInfo = ({ title, data, isObject = false, color = "default" }) => (
   <Grid item xs={6}>
-    <Typography variant="h6" component="div">
+    <Typography variant="subtitle1" component="div">
       {title}
     </Typography>
     <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", my: 1 }}>
