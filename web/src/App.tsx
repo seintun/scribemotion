@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { SnackbarProvider } from "./components/SnackbarContext/SnackbarContext";
-import { Register } from "./components/Register";
-import { Login } from "./components/Login";
+import { Register } from "./containers/Register";
+import { Login } from "./containers/Login";
 import { PostPage } from "./containers/PostPage";
 import HelloScribeMotion from "./components/HelloScribemotion";
 
