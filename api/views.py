@@ -5,8 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from api.services.sentiment_analysis import analyze_sentiment
-
-from .models import User
+from api.models import User, Post
 
 
 @api_view(["POST"])
@@ -113,3 +112,14 @@ def sentiment_analysis_view(request):
         return Response(
             {"error": str(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+
+
+@api_view(["GET"])
+def all_posts_view(request):
+    """
+    A view function that returns all posts.
+    """
+    posts = Post.objects.all()
+
+    posts = posts.values()
+    return Response(posts, status=status.HTTP_200_OK)

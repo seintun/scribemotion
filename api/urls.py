@@ -13,4 +13,5 @@ urlpatterns = [
         views.sentiment_analysis_view,
         name="analyze-sentiment",
     ),
+    path("posts/", views.all_posts_view, name="all-posts"),
 ]
