@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axiosInstance from "../utils/axiosUtils";
 import { useSnackbar } from "../components/SnackbarContext";
+import { useAuthContext } from "../context/AuthContext";
 
 /**
  * @description Custom hook to handle user authentication.
@@ -10,6 +11,7 @@ import { useSnackbar } from "../components/SnackbarContext";
 const useAuth = () => {
   const [message, setMessage] = useState("");
   const { showSuccess, showError } = useSnackbar();
+  const { isLoggedIn, setIsLoggedIn } = useAuthContext();
 
   const handleError = (error) => {
     const errorMessage = error.response?.data?.message || "An error occurred.";
@@ -40,6 +42,7 @@ const useAuth = () => {
         password,
       });
       setMessage(data.message);
+      setIsLoggedIn(true);
       showSuccess(data.message);
     } catch (error) {
       handleError(error);
@@ -50,6 +53,7 @@ const useAuth = () => {
     try {
       const { data } = await axiosInstance.post("/logout/");
       setMessage(data.message);
+      setIsLoggedIn(false);
       showSuccess(data.message);
     } catch (error) {
       handleError(error);
@@ -58,6 +62,7 @@ const useAuth = () => {
 
   return {
     message,
+    isLoggedIn,
     register,
     login,
     logout,

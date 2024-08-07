@@ -14,7 +14,7 @@ const Login = () => {
   };
 
   return (
-    <Container>
+    <Container maxWidth="sm">
       <Typography variant="h4">Login</Typography>
       <form onSubmit={handleSubmit}>
         <TextField
