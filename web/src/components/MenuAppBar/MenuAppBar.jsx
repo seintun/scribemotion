@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   AppBar,
@@ -17,6 +17,7 @@ import {
   Logout as LogoutIcon,
   PersonAdd as PersonAddIcon,
 } from "@mui/icons-material";
+import { ConfirmDialog } from "../ConfirmDialog";
 
 import { useAuthContext } from "../../context/AuthContext";
 import useAuth from "../../hooks/useAuth";
@@ -25,9 +26,14 @@ const MenuAppBar = () => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const { isLoggedIn, currentUser } = useAuthContext();
   const { logout } = useAuth();
+  const [isDialogOpen, setDialogOpen] = useState(false);
 
-  const handleMenu = (event) => {
-    // Handle menu click
+  const openDialog = () => setDialogOpen(true);
+  const closeDialog = () => setDialogOpen(false);
+  const handleLogout = () => {
+    console.log("User logged out");
+    logout();
+    setDialogOpen(false);
   };
 
   return (
@@ -71,7 +77,6 @@ const MenuAppBar = () => {
             <>
               <Button
                 size="large"
-                onClick={handleMenu}
                 color="inherit"
                 startIcon={<AccountCircle />}
               >
@@ -79,7 +84,7 @@ const MenuAppBar = () => {
               </Button>
               <Button
                 size="large"
-                onClick={logout}
+                onClick={openDialog}
                 color="inherit"
                 startIcon={<LogoutIcon />}
               >
@@ -90,6 +95,13 @@ const MenuAppBar = () => {
         </Toolbar>
       </AppBar>
       <Toolbar />
+      <ConfirmDialog
+        title={"Are you sure you want to logout?"}
+        content={"Press 'Confirm Logout' to proceed with logout."}
+        open={isDialogOpen}
+        onClose={closeDialog}
+        onConfirm={handleLogout}
+      />
     </Box>
   );
 };

@@ -49,7 +49,7 @@ const useAuth = () => {
       setMessage(data.message);
       setIsLoggedIn(true);
       setCurrentUser(data.data.username);
-      showSuccess(`Welcome back, ${currentUser}!`);
+      showSuccess(`Welcome back, ${data.data.username}!`);
     } catch (error) {
       handleError(error);
     }
