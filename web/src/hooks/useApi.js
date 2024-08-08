@@ -11,6 +11,7 @@ import { useSnackbar } from "../components/SnackbarContext";
 const useApi = (endpoint, method = "get") => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState(null);
+    // eslint-disable-next-line no-unused-vars
     const { showSuccess, showError } = useSnackbar();
 
     // Validate endpoint and method

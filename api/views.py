@@ -61,8 +61,15 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
+            session_token = request.session.session_key
             return Response(
-                {"message": "Login successful", "data": {"username": username}},
+                {
+                    "message": "Login successful",
+                    "data": {
+                        "username": username,
+                        "session_token": session_token,
+                    },
+                },
                 status=status.HTTP_200_OK,
             )
         else:

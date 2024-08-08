@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axiosInstance from "../utils/axiosUtils";
 import { useSnackbar } from "../components/SnackbarContext";
 import { useAuthContext } from "../context/AuthContext";
@@ -12,13 +12,27 @@ import { useNavigate } from "react-router-dom";
 const useAuth = () => {
   const [message, setMessage] = useState("");
   const { showSuccess, showError } = useSnackbar();
-  const {
-    isLoggedIn,
-    setIsLoggedIn,
-    currentUser,
-    setCurrentUser
-  } = useAuthContext();
+  const { isLoggedIn, setIsLoggedIn, currentUser, setCurrentUser } = useAuthContext();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    initializeAuth();
+  }, [setIsLoggedIn, setCurrentUser]);
+
+  /**
+   * @description Initializes the user authentication state based on the stored data.
+   */
+  const initializeAuth = () => {
+    const storedIsLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    const storedUser = localStorage.getItem("currentUser");
+    const storedToken = localStorage.getItem("sessionToken");
+
+    if (storedIsLoggedIn && storedUser && storedToken) {
+      setIsLoggedIn(true);
+      setCurrentUser(storedUser);
+      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
+    }
+  };
 
   const handleError = (error) => {
     const errorMessage = error.response?.data?.message || "An error occurred.";
@@ -27,16 +41,43 @@ const useAuth = () => {
     showError(errorMessage);
   };
 
+  /**
+   * @description Sets the authentication data in the local storage and axios headers.
+   */
+  const setAuthData = (username, sessionToken) => {
+    setIsLoggedIn(true);
+    setCurrentUser(username);
+    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("currentUser", username);
+    localStorage.setItem("sessionToken", sessionToken);
+    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${sessionToken}`;
+  };
+
+  /**
+   * @description Clears the authentication data from the local storage and axios headers.
+   * Also resets the user authentication state.
+   */
+  const clearAuthData = () => {
+    setIsLoggedIn(false);
+    setCurrentUser(null);
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("currentUser");
+    localStorage.removeItem("sessionToken");
+    delete axiosInstance.defaults.headers.common['Authorization'];
+  };
+
   const register = async (username, email, password1, password2) => {
     try {
-      const { data } = await axiosInstance.post("/register/", {
+      const response = await axiosInstance.post("/register/", {
         username,
         email,
         password1,
         password2,
       });
-      setMessage(data.message);
-      showSuccess(`Welcome to the community, ${data.data.username}!`);
+      const { message, data: { username: registeredUsername } } = response.data;
+      setMessage(message);
+      showSuccess(`Welcome to the community, ${registeredUsername}!`);
+      navigate("/");
     } catch (error) {
       handleError(error);
     }
@@ -44,14 +85,11 @@ const useAuth = () => {
 
   const login = async (username, password) => {
     try {
-      const { data } = await axiosInstance.post("/login/", {
-        username,
-        password,
-      });
-      setMessage(data.message);
-      setIsLoggedIn(true);
-      setCurrentUser(data.data.username);
-      showSuccess(`Welcome back, ${data.data.username}!`);
+      const response = await axiosInstance.post("/login/", { username, password });
+      const { message, data: { username: loggedInUsername, session_token } } = response.data;
+      setMessage(message);
+      setAuthData(loggedInUsername, session_token);
+      showSuccess(`Welcome back, ${loggedInUsername}!`);
       navigate("/");
     } catch (error) {
       handleError(error);
@@ -60,11 +98,12 @@ const useAuth = () => {
 
   const logout = async () => {
     try {
-      const { data } = await axiosInstance.post("/logout/");
-      setMessage(data.message);
-      setIsLoggedIn(false);
-      setCurrentUser(null);
-      showSuccess(`Till next time, ${currentUser}!`);
+      const response = await axiosInstance.post("/logout/");
+      const { message } = response.data;
+      setMessage(message);
+      clearAuthData();
+      showSuccess(`Till next time!`);
+      navigate("/");
     } catch (error) {
       handleError(error);
     }
