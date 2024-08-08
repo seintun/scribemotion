@@ -35,7 +35,11 @@ const PostDetails = ({
         subheader={`by ${author__username} on ${subheader}`}
       />
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          style={{ whiteSpace: "pre-wrap" }}
+        >
           {text}
         </Typography>
       </CardContent>
