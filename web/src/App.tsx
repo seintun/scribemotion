@@ -6,7 +6,8 @@ import { SnackbarProvider } from "./components/SnackbarContext";
 import { MenuAppBar } from "./components/MenuAppBar";
 import { Register } from "./containers/Register";
 import { Login } from "./containers/Login";
-import { AllPostsPage } from "./containers/PostPage";
+import { Homepage } from "./containers/Homepage";
+import { ProfilePage } from "./containers/ProfilePage";
 
 // import HelloScribeMotion from "./components/HelloScribemotion";
 
@@ -21,7 +22,11 @@ const App: React.FC = () => {
             <MenuAppBar />
             <Routes>
               {/* <Route path="/" element={<HelloScribeMotion />} /> */}
-              <Route path="/" element={<AllPostsPage />} />
+              <Route path="/" element={<Homepage defaultFilter="all" />} />
+              <Route
+                path="/profile"
+                element={<ProfilePage defaultFilter="user" />}
+              />
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
             </Routes>

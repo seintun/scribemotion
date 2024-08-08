@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AppBar, Box, Toolbar, IconButton, useMediaQuery } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { AppLogo } from "../AppLogo";
@@ -10,6 +10,7 @@ import useAuth from "../../hooks/useAuth";
 import { PostAuthButtons, PreAuthButtons } from "../AuthButtons";
 
 const MenuAppBar = () => {
+  const navigate = useNavigate();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const { isLoggedIn, currentUser } = useAuthContext();
   const { logout } = useAuth();
@@ -21,6 +22,12 @@ const MenuAppBar = () => {
     console.log("User logged out");
     logout();
     setDialogOpen(false);
+  };
+
+  const handleProfileClick = () => {
+    navigate("/profile", {
+      state: { defaultFilter: "user", username: "kirby" },
+    });
   };
 
   return (
@@ -37,6 +44,7 @@ const MenuAppBar = () => {
               isMobile={isMobile}
               currentUser={currentUser}
               openDialog={openDialog}
+              handleProfileClick={handleProfileClick}
             />
           )}
         </Toolbar>

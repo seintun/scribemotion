@@ -6,15 +6,25 @@ import { AccountCircle, Logout as LogoutIcon } from "@mui/icons-material";
  * PostAuthButtons component that displays
  * the user's name and a logout button after the user has logged in.
  */
-const PostAuthButtons = ({ isMobile, currentUser, openDialog }) => (
+const PostAuthButtons = ({
+  isMobile,
+  currentUser,
+  openDialog,
+  handleProfileClick,
+}) => (
   <>
-    <Button size="large" color="inherit" startIcon={<AccountCircle />}>
+    <Button
+      size="large"
+      color="inherit"
+      onClick={handleProfileClick}
+      startIcon={<AccountCircle />}
+    >
       {!isMobile && currentUser}
     </Button>
     <Button
       size="large"
-      onClick={openDialog}
       color="inherit"
+      onClick={openDialog}
       startIcon={<LogoutIcon />}
     >
       {!isMobile && "Logout"}
