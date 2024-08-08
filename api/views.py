@@ -1,6 +1,7 @@
 from django.db import IntegrityError
 from django.http import HttpRequest, HttpResponse
 from django.contrib.auth import login, logout, authenticate
+from django.middleware.csrf import get_token
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -13,14 +14,12 @@ def register_view(request):
     """
     A view function that registers a new user.
     """
-    print("request", request)
     if request.method == "POST":
         username = request.data.get("username")
         email = request.data.get("email")
-
-        # Ensure password matches confirmation
         password1 = request.data.get("password1")
         password2 = request.data.get("password2")
+
         if password1 != password2:
             return Response(
                 {"message": "Passwords must match."}, status=status.HTTP_400_BAD_REQUEST
@@ -37,8 +36,20 @@ def register_view(request):
             )
 
         login(request, user)
+
+        user_details = {
+            "username": user.username,
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+        }
+
         return Response(
-            {"message": "User registered successfully."}, status=status.HTTP_201_CREATED
+            {
+                "message": "User registered successfully.",
+                "data": user_details,
+            },
+            status=status.HTTP_201_CREATED,
         )
     else:
         return Response(
@@ -62,13 +73,20 @@ def login_view(request):
         if user is not None:
             login(request, user)
             session_token = request.session.session_key
+            csrf_token = get_token(request)  # Generate CSRF token
+
+            # Extract additional user details
+            user_details = {
+                "username": user.username,
+                "email": user.email,
+                "session_token": session_token,
+                "csrf_token": csrf_token,
+            }
+
             return Response(
                 {
                     "message": "Login successful",
-                    "data": {
-                        "username": username,
-                        "session_token": session_token,
-                    },
+                    "data": user_details,
                 },
                 status=status.HTTP_200_OK,
             )
@@ -91,6 +109,10 @@ def logout_view(request):
     """
     if request.method == "POST":
         logout(request)
+
+        # Optionally clear session data
+        request.session.flush()
+
         return Response(
             {"message": "Logout successful"},
             status=status.HTTP_200_OK,
