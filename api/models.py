@@ -18,7 +18,7 @@ class Post(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=255)
-    subheader = models.DateField()
+    subheader = models.CharField(max_length=255)
     text = models.TextField()
     avatar = models.CharField(max_length=1)
     author = models.ForeignKey(User, on_delete=models.CASCADE)

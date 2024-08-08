@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 import Card from "@mui/material/Card";
 import {
   Avatar,
@@ -18,6 +19,7 @@ const PostDetails = ({
   text,
   avatar,
   author__username,
+  created_at,
   menuItems,
   onMenuItemClick,
 }) => {
@@ -32,7 +34,9 @@ const PostDetails = ({
           />
         }
         title={title}
-        subheader={`by ${author__username} on ${subheader}`}
+        subheader={`by ${author__username} on ${moment(created_at).format(
+          "MM/DD/YYYY HH:mm:ss"
+        )}`}
       />
       <CardContent>
         <Typography
