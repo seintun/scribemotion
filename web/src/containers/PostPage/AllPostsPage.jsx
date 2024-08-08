@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
-  LinearProgress,
-  Paper,
-  Typography,
-  CircularProgress,
   Badge,
+  CircularProgress,
+  LinearProgress,
+  MenuItem,
+  Paper,
+  Select,
+  Typography,
 } from "@mui/material";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostPage from "./PostPage";
@@ -15,17 +17,18 @@ const AllPostsPage = () => {
   const [posts, setPosts] = useState([]);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const [filter, setFilter] = useState("all"); // Default `all` filter for posts
   const limit = 5;
 
   const {
     loading,
     data,
     callApi: fetchAllPosts,
-  } = useApi(`/posts?offset=${offset}&limit=${limit}`, "get");
+  } = useApi(`/posts?offset=${offset}&limit=${limit}&filter=${filter}`, "get");
 
   useEffect(() => {
     fetchAllPosts();
-  }, [offset]);
+  }, [offset, filter]);
 
   useEffect(() => {
     if (data) {
@@ -40,11 +43,26 @@ const AllPostsPage = () => {
     }
   };
 
+  // Handle filter change for changes in filter
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+    setPosts([]); // Clear posts when filter changes
+    setOffset(0); // Reset offset when filter changes
+  };
+
   if (loading && offset === 0) return <LinearProgress color="secondary" />;
   if (!posts || posts.length === 0) return <EmptyPage />;
 
   return (
     <Paper elevation={3} sx={{ margin: 2, padding: 2 }}>
+      <Select
+        value={filter}
+        onChange={handleFilterChange}
+        sx={{ marginBottom: 2 }}
+      >
+        <MenuItem value="all">All Posts</MenuItem>
+        <MenuItem value="user">My Posts</MenuItem>
+      </Select>
       <InfiniteScroll
         dataLength={posts.length}
         next={fetchMorePosts}

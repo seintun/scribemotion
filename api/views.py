@@ -53,7 +53,6 @@ def login_view(request):
     A view function that logs in a user.
     """
     if request.method == "POST":
-
         # Attempt to sign user in
         username = request.data.get("username")
         password = request.data.get("password")
@@ -83,8 +82,17 @@ def logout_view(request):
     """
     A view function that logs out a user.
     """
-    logout(request)
-    return Response({"message": "Logout successful"}, status=status.HTTP_200_OK)
+    if request.method == "POST":
+        logout(request)
+        return Response(
+            {"message": "Logout successful"},
+            status=status.HTTP_200_OK,
+        )
+    else:
+        return Response(
+            {"message": "GET method not allowed"},
+            status=status.HTTP_405_METHOD_NOT_ALLOWED,
+        )
 
 
 @api_view(["GET"])
@@ -124,8 +132,22 @@ def all_posts_view(request):
     """
     offset = int(request.GET.get("offset", 0))
     limit = int(request.GET.get("limit", 5))
+    filter = request.GET.get("filter", "all")
 
-    posts = Post.objects.all()[offset : offset + limit]
-    posts = posts.values()
+    if filter == "user" and request.user.is_authenticated:
+        posts_query = Post.objects.filter(author=request.user)
+    else:
+        posts_query = Post.objects.all()
+
+    posts = posts_query.select_related("author")[offset : offset + limit].values(
+        "id",
+        "avatar",
+        "author__username",
+        "title",
+        "subheader",
+        "text",
+        "created_at",
+        "updated_at",
+    )
 
     return Response(posts, status=status.HTTP_200_OK)

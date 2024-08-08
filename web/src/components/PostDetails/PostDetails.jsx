@@ -17,6 +17,7 @@ const PostDetails = ({
   subheader,
   text,
   avatar,
+  author__username,
   menuItems,
   onMenuItemClick,
 }) => {
@@ -31,7 +32,7 @@ const PostDetails = ({
           />
         }
         title={title}
-        subheader={subheader}
+        subheader={`by ${author__username} on ${subheader}`}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
