@@ -25,8 +25,8 @@ const MenuAppBar = () => {
   };
 
   const handleProfileClick = () => {
-    navigate("/profile", {
-      state: { defaultFilter: "user", username: "kirby" },
+    navigate(`/profile/${currentUser}`, {
+      state: { defaultFilter: "user" },
     });
   };
 
