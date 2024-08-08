@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { LinearProgress, Paper } from "@mui/material";
 import useAuthContext from "../../hooks/useAuth";
 import useApi from "../../hooks/useApi";
 import { EmptyPage } from "../../components/EmptyPage";
 import { PostPage } from "../PostPage";
 
-const ProfilePage = ({ defaultFilter = "user", username = null }) => {
+const ProfilePage = ({ defaultFilter = "user" }) => {
+  const { username } = useParams();
   const { currentUser } = useAuthContext();
   const [posts, setPosts] = useState([]);
   const [offset, setOffset] = useState(0);

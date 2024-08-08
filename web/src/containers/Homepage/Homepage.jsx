@@ -7,7 +7,7 @@ import { SelectDropdown } from "../../components/SelectDropdown";
 import { CreatePost } from "../CreatePost";
 import { PostPage } from "../PostPage";
 
-const Homepage = ({ defaultFilter = "all", username = null }) => {
+const Homepage = ({ defaultFilter = "all" }) => {
   const { currentUser } = useAuthContext();
   const [posts, setPosts] = useState([]);
   const [offset, setOffset] = useState(0);
@@ -20,9 +20,7 @@ const Homepage = ({ defaultFilter = "all", username = null }) => {
     data,
     fetchData: fetchAllPosts,
   } = useApi(
-    `/posts?offset=${offset}&limit=${limit}&filter=${filter}&user=${
-      username ?? currentUser
-    }`,
+    `/posts?offset=${offset}&limit=${limit}&filter=${filter}&user=${currentUser}`,
     "get"
   );
 

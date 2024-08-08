@@ -24,7 +24,7 @@ const App: React.FC = () => {
               {/* <Route path="/" element={<HelloScribeMotion />} /> */}
               <Route path="/" element={<Homepage defaultFilter="all" />} />
               <Route
-                path="/profile"
+                path="/profile/:username"
                 element={<ProfilePage defaultFilter="user" />}
               />
               <Route path="/register" element={<Register />} />
