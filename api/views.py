@@ -182,9 +182,16 @@ def all_posts_view(request):
     offset = int(request.GET.get("offset", 0))
     limit = int(request.GET.get("limit", 5))
     filter = request.GET.get("filter", "all")
+    username = request.GET.get("user", "")
 
-    if filter == "user" and request.user.is_authenticated:
-        posts_query = Post.objects.filter(author=request.user)
+    if filter == "user":
+        try:
+            author_id = User.objects.get(username=username)
+            posts_query = Post.objects.filter(author=author_id)
+        except User.DoesNotExist:
+            return Response(
+                {"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND
+            )
     else:
         posts_query = Post.objects.all()
 

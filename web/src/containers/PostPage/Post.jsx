@@ -4,7 +4,7 @@ import { AnalysisCard } from "../../components/AnalysisCard";
 import { PostDetails } from "../../components/PostDetails";
 import useApi from "../../hooks/useApi";
 
-const PostPage = ({ initialPostDetails }) => {
+const Post = ({ initialPostDetails }) => {
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [postDetails] = useState(initialPostDetails);
 
@@ -43,4 +43,4 @@ const PostPage = ({ initialPostDetails }) => {
   );
 };
 
-export default PostPage;
+export default Post;

@@ -39,6 +39,9 @@ const PostDetails = ({
         )}`}
       />
       <CardContent>
+        <Typography variant="body2" color="text.primary">
+          {subheader}
+        </Typography>
         <Typography
           variant="body2"
           color="text.secondary"

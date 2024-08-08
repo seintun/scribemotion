@@ -1,4 +1,4 @@
 import AllPostsPage from './AllPostsPage';
-import PostPage from './PostPage';
+import Post from './Post';
 
-export { AllPostsPage, PostPage };
+export { AllPostsPage, Post };

@@ -9,12 +9,14 @@ import {
   Typography,
 } from "@mui/material";
 import InfiniteScroll from "react-infinite-scroll-component";
-import PostPage from "./PostPage";
+import Post from "./Post";
+import useAuthContext from "../../hooks/useAuth";
 import useApi from "../../hooks/useApi";
 import { EmptyPage } from "../../components/EmptyPage";
 import { CreatePost } from "../../containers/CreatePost";
 
 const AllPostsPage = () => {
+  const { currentUser } = useAuthContext();
   const [posts, setPosts] = useState([]);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -25,11 +27,14 @@ const AllPostsPage = () => {
     loading,
     data,
     fetchData: fetchAllPosts,
-  } = useApi(`/posts?offset=${offset}&limit=${limit}&filter=${filter}`, "get");
+  } = useApi(
+    `/posts?offset=${offset}&limit=${limit}&filter=${filter}&user=${currentUser}`,
+    "get"
+  );
 
   useEffect(() => {
     fetchAllPosts();
-  }, [offset, filter]);
+  }, [offset, filter, currentUser]);
 
   useEffect(() => {
     if (data) {
@@ -84,7 +89,7 @@ const AllPostsPage = () => {
               overlap="circular"
               sx={{ left: 15, top: 15 }}
             />
-            <PostPage initialPostDetails={post} />
+            <Post initialPostDetails={post} />
           </div>
         ))}
       </InfiniteScroll>
