@@ -8,7 +8,7 @@ const PostPage = ({ initialPostDetails }) => {
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [postDetails] = useState(initialPostDetails);
 
-  const { data, callApi: analyzeSentiment } = useApi(
+  const { data, fetchData: analyzeSentiment } = useApi(
     "/analyze-sentiment/",
     "post"
   );

@@ -12,6 +12,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import PostPage from "./PostPage";
 import useApi from "../../hooks/useApi";
 import { EmptyPage } from "../../components/EmptyPage";
+import { CreatePost } from "../../containers/CreatePost";
 
 const AllPostsPage = () => {
   const [posts, setPosts] = useState([]);
@@ -23,7 +24,7 @@ const AllPostsPage = () => {
   const {
     loading,
     data,
-    callApi: fetchAllPosts,
+    fetchData: fetchAllPosts,
   } = useApi(`/posts?offset=${offset}&limit=${limit}&filter=${filter}`, "get");
 
   useEffect(() => {
@@ -63,6 +64,7 @@ const AllPostsPage = () => {
         <MenuItem value="all">All Posts</MenuItem>
         <MenuItem value="user">My Posts</MenuItem>
       </Select>
+      <CreatePost />
       <InfiniteScroll
         dataLength={posts.length}
         next={fetchMorePosts}

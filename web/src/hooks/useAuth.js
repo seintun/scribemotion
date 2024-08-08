@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosUtils";
 import { useSnackbar } from "../components/SnackbarContext";
 import { useAuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 /**
  * @description Custom hook to handle user authentication.

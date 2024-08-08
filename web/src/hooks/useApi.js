@@ -11,7 +11,7 @@ import { useSnackbar } from "../components/SnackbarContext";
 const useApi = (endpoint, method = "get") => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState(null);
-    // eslint-disable-next-line no-unused-vars
+    const [success, setSuccess] = useState(false);
     const { showSuccess, showError } = useSnackbar();
 
     // Validate endpoint and method
@@ -24,11 +24,14 @@ const useApi = (endpoint, method = "get") => {
         throw new Error("Invalid or missing method");
     }
 
-    const callApi = async (payload) => {
+    const fetchData = async (payload) => {
         setLoading(true);
+        setSuccess(false);
         try {
             const response = await axiosInstance[method](endpoint, payload);
             setData(response.data);
+            setSuccess(true);
+            showSuccess("Successful API call");
         } catch (error) {
             console.error(`API call error: ${error.message}`);
             showError(`API call error: ${error.message}`);
@@ -37,7 +40,7 @@ const useApi = (endpoint, method = "get") => {
         }
     };
 
-    return { loading, data, callApi };
+    return { loading, data, success, fetchData };
 };
 
 export default useApi;

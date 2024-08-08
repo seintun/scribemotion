@@ -23,6 +23,12 @@ axiosInstance.interceptors.request.use(
     if (csrfToken) {
       config.headers["X-CSRFToken"] = csrfToken;
     }
+
+    const authToken = localStorage.getItem("sessionToken");
+    if (authToken) {
+      config.headers["Authorization"] = `Bearer ${authToken}`;
+    }
+
     return config;
   },
   (error) => {
