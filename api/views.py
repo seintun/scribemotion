@@ -301,3 +301,18 @@ def create_post_view(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["DELETE"])
+def post_views(request, post_id):
+    """
+    A view function that allows authenticated users to delete a post by its ID.
+    """
+    try:
+        post = Post.objects.get(id=post_id)
+        post.delete()
+        return Response(
+            {"detail": "Post deleted successfully."}, status=status.HTTP_204_NO_CONTENT
+        )
+    except Post.DoesNotExist:
+        return Response({"detail": "Post not found."}, status=status.HTTP_404_NOT_FOUND)

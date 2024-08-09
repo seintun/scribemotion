@@ -59,7 +59,7 @@ const Homepage = ({ defaultFilter = "all" }) => {
           handleFilterChange={handleFilterChange}
         />
       )}
-      {/* <CreatePost /> */}
+      <CreatePost />
       <PostPage
         data={posts}
         fetchMorePosts={fetchMorePosts}

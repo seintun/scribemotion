@@ -20,6 +20,7 @@ const PostDetails = ({
   isLoggedIn,
 }) => {
   const {
+    id,
     author__username,
     avatar,
     created_at,
@@ -30,13 +31,14 @@ const PostDetails = ({
     user_reacted,
   } = postDetails;
   return (
-    <Card sx={{ margin: 2, padding: 3 }}>
+    <Card key={id} sx={{ margin: 2, padding: 3 }}>
       <CardHeader
         avatar={<Avatar sx={{ bgcolor: red[500] }}>{avatar}</Avatar>}
         action={
           <ActionMenuButton
             menuItems={menuItems}
             onMenuItemClick={onMenuItemClick}
+            isLoggedIn={isLoggedIn}
           />
         }
         title={title}
