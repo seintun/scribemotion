@@ -7,12 +7,7 @@ import { PostDetails } from "../../components/PostDetails";
 import { CreatePost } from "../../containers/CreatePost";
 import useApi from "../../hooks/useApi";
 
-const Post = ({
-  initialPostDetails,
-  isLoggedIn,
-  currentUser,
-  removeDeletedPost,
-}) => {
+const Post = ({ initialPostDetails, isLoggedIn, currentUser }) => {
   const navigate = useNavigate();
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -43,7 +38,6 @@ const Post = ({
   const closeEditDialog = () => setEditDialogOpen(false);
   const handleDelete = () => {
     deletePost();
-    removeDeletedPost(postDetails.id);
     setDialogOpen(false);
   };
 

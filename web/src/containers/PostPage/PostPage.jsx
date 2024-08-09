@@ -8,7 +8,7 @@ import { Post } from "../PostView";
 
 const PostPage = () => {
   const { postId } = useParams();
-  const { currentUser } = useAuthContext();
+  const { currentUser, isLoggedIn } = useAuthContext();
   const [post, setPost] = useState(null);
 
   const {
@@ -37,7 +37,7 @@ const PostPage = () => {
       </Typography>
       <Post
         initialPostDetails={post}
-        isLoggedIn={!!currentUser}
+        isLoggedIn={isLoggedIn}
         currentUser={currentUser}
       />
     </Paper>

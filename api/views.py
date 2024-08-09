@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from api.services.sentiment_analysis import analyze_sentiment
 from api.models import User, Post, Reaction
+from api.serializers import PostSerializer
 
 
 @api_view(["POST"])

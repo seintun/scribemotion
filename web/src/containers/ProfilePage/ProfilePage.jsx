@@ -8,7 +8,7 @@ import { PostView } from "../PostView";
 
 const ProfilePage = ({ defaultFilter = "user" }) => {
   const { username } = useParams();
-  const { currentUser } = useAuthContext();
+  const { currentUser, isLoggedIn } = useAuthContext();
   const [posts, setPosts] = useState([]);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -55,6 +55,8 @@ const ProfilePage = ({ defaultFilter = "user" }) => {
         data={posts}
         fetchMorePosts={fetchMorePosts}
         hasMore={hasMore}
+        isLoggedIn={isLoggedIn}
+        currentUser={currentUser}
       />
     </Paper>
   );

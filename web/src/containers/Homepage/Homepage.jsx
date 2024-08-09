@@ -48,10 +48,6 @@ const Homepage = ({ defaultFilter = "all" }) => {
     }
   };
 
-  const removeDeletedPost = (postId) => {
-    setPosts((posts) => posts.filter((post) => post.id !== postId));
-  };
-
   // Handle filter change for changes in filter
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
@@ -74,7 +70,6 @@ const Homepage = ({ defaultFilter = "all" }) => {
         data={posts}
         fetchMorePosts={fetchMorePosts}
         hasMore={hasMore}
-        removeDeletedPost={removeDeletedPost}
         isLoggedIn={isLoggedIn}
         currentUser={currentUser}
       />

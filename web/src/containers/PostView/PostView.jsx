@@ -34,7 +34,6 @@ const PostView = ({
           initialPostDetails={post}
           isLoggedIn={isLoggedIn}
           currentUser={currentUser}
-          removeDeletedPost={removeDeletedPost}
         />
       </div>
     ))}
