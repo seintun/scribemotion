@@ -35,6 +35,8 @@ const Post = ({
     "delete"
   );
 
+  const { fetchData: updateReaction } = useApi(`/reaction/`, "post");
+
   const openDialog = () => setDialogOpen(true);
   const closeDialog = () => setDialogOpen(false);
   const openEditDialog = () => setEditDialogOpen(true);
@@ -43,6 +45,35 @@ const Post = ({
     deletePost();
     removeDeletedPost(postDetails.id);
     setDialogOpen(false);
+  };
+
+  const handleReaction = (newReaction, prevReaction) => {
+    console.log("Reaction: Post", newReaction, prevReaction);
+
+    // Check if all previous reactions are false
+    // which means the user is reacting for the first time
+    const allFalse = Object.values(prevReaction).every(
+      (value) => value === false
+    );
+
+    // Identify the previous reaction
+    let previous_reaction;
+    if (allFalse) {
+      previous_reaction = false;
+    } else {
+      previous_reaction = Object.keys(prevReaction).find(
+        (key) => prevReaction[key] === true
+      );
+    }
+
+    // Create the payload
+    const payload = {
+      post_id: postDetails.id,
+      username: currentUser,
+      new_reaction: newReaction,
+      previous_reaction: previous_reaction,
+    };
+    updateReaction(payload);
   };
 
   // Handle menu item click for ActionMenuButton
@@ -71,6 +102,7 @@ const Post = ({
           menuItems={avaliableActionsList}
           onMenuItemClick={handleMenuItemClick}
           isLoggedIn={isLoggedIn}
+          updateReactions={handleReaction}
         />
       </Grid>
       {showAnalysis && (

@@ -8,7 +8,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from api.services.sentiment_analysis import analyze_sentiment
 from api.models import User, Post, Reaction
-from api.serializers import PostSerializer
 
 
 @api_view(["POST"])
@@ -351,3 +350,68 @@ def post_view(request, post_id=None):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def reaction_view(request):
+    if request.method == "POST":
+        # Extract reaction data from the request
+        data = request.data
+        username = data.get("username")
+        post_id = data.get("post_id")
+        new_reaction = data.get("new_reaction").lower()
+        previous_reaction = (
+            data.get("previous_reaction").lower()
+            if data.get("previous_reaction")
+            else None
+        )
+        author = get_user_by_username(username)
+
+        # Validate the data
+        if not username or not post_id or not new_reaction:
+            return Response(
+                {"error": "Missing required fields."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Retrieve the post
+        try:
+            post = Post.objects.get(id=post_id)
+        except Post.DoesNotExist:
+            return Response(
+                {"error": "Post not found."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        # Check if the previous reaction exists
+        if not previous_reaction:
+            # Create a new reaction
+            Reaction.objects.create(post=post, user=author, reaction=new_reaction)
+            return Response(
+                {"message": "Reaction created."},
+                status=status.HTTP_201_CREATED,
+            )
+
+        try:
+            reaction = Reaction.objects.get(
+                post=post, user=author, reaction=previous_reaction
+            )
+            if reaction.reaction == new_reaction:
+                reaction.reaction = new_reaction
+                reaction.save()
+                return Response(
+                    {"message": "Reaction updated."},
+                    status=status.HTTP_200_OK,
+                )
+        except Reaction.DoesNotExist:
+            # Create a new reaction
+            Reaction.objects.create(post=post, user=author, reaction=new_reaction)
+            return Response(
+                {"message": "Reaction created."},
+                status=status.HTTP_201_CREATED,
+            )
+
+        return Response(
+            {"error": "Previous reaction not found or does not match."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )

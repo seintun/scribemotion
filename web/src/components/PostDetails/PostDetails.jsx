@@ -18,6 +18,7 @@ const PostDetails = ({
   menuItems,
   onMenuItemClick,
   isLoggedIn,
+  updateReactions,
 }) => {
   const {
     id,
@@ -30,6 +31,7 @@ const PostDetails = ({
     reactions_count,
     user_reacted,
   } = postDetails;
+
   return (
     <Card key={id} sx={{ margin: 2, padding: 3 }}>
       <CardHeader
@@ -62,6 +64,7 @@ const PostDetails = ({
           initialReactions={reactions_count}
           userReaction={user_reacted}
           isLoggedIn={isLoggedIn}
+          updateReactions={updateReactions}
         />
       </CardActions>
     </Card>

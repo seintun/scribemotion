@@ -26,11 +26,13 @@ const ReactionButtons = ({
   initialReactions = { like: 0, love: 0, angry: 0, celebrate: 0 },
   userReaction = { like: false, love: false, angry: false, celebrate: false },
   isLoggedIn = false,
+  updateReactions,
 }) => {
   const [reaction, setReaction] = useState(userReaction);
   const [counts, setCounts] = useState(initialReactions);
 
   const handleReaction = (newReaction) => {
+    updateReactions(newReaction, reaction);
     if (!isLoggedIn) return;
     setCounts((prevCounts) => {
       const updatedCounts = { ...prevCounts };
