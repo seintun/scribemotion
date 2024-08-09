@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AppBar, Box, Toolbar, IconButton, useMediaQuery } from "@mui/material";
-import { Menu as MenuIcon } from "@mui/icons-material";
+import { AppBar, Box, Toolbar, useMediaQuery } from "@mui/material";
 import { AppLogo } from "../AppLogo";
 import { ConfirmDialog, PopupDialog } from "../Dialog";
 import { CreatePost } from "../../containers/CreatePost";

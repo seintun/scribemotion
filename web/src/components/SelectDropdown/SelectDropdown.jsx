@@ -1,9 +1,9 @@
 import React from "react";
 import { MenuItem, Select } from "@mui/material";
 
-const SelectDropdown = ({ filter, handleFilterChange }) => (
+const SelectDropdown = ({ value, handleFilterChange }) => (
   <Select
-    value={filter}
+    value={value}
     onChange={handleFilterChange}
     sx={{
       marginBottom: 1,

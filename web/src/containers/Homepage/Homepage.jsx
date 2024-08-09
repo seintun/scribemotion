@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { LinearProgress, Paper } from "@mui/material";
 import useAuthContext from "../../hooks/useAuth";
 import useApi from "../../hooks/useApi";
@@ -7,6 +8,7 @@ import { SelectDropdown } from "../../components/SelectDropdown";
 import { PostPage } from "../PostPage";
 
 const Homepage = ({ defaultFilter = "all" }) => {
+  const navigate = useNavigate();
   const { currentUser, isLoggedIn } = useAuthContext();
   const [posts, setPosts] = useState([]);
   const [offset, setOffset] = useState(0);
@@ -22,6 +24,12 @@ const Homepage = ({ defaultFilter = "all" }) => {
     `/posts?offset=${offset}&limit=${limit}&filter=${filter}&user=${currentUser}`,
     "get"
   );
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, [isLoggedIn, navigate]);
 
   useEffect(() => {
     fetchAllPosts();
@@ -58,7 +66,7 @@ const Homepage = ({ defaultFilter = "all" }) => {
     <Paper elevation={3} sx={{ margin: 2, padding: 2 }}>
       {defaultFilter === "all" && (
         <SelectDropdown
-          filter={filter}
+          value={filter}
           handleFilterChange={handleFilterChange}
         />
       )}

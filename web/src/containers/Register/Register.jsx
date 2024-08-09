@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { TextField, Button, Typography, Container, Box } from "@mui/material";
+import { Link } from "react-router-dom";
+import { Container, Box, Button, TextField, Typography } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
 
 const Register = () => {
@@ -61,6 +62,9 @@ const Register = () => {
             Register
           </Button>
         </form>
+        <Typography variant="body2" sx={{ mt: 2 }}>
+          Have an account? <Link to="/login">Login</Link>
+        </Typography>
         {message && (
           <Typography variant="body1" color="error" sx={{ mt: 2 }}>
             {message}
