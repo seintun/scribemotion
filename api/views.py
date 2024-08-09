@@ -116,39 +116,34 @@ def annotate_posts(posts_query):
     )
 
 
-def format_posts(posts, author_id):
+def format_single_post(post, author_id):
     """
-    A helper function that formats posts to include reactions and user_reacted.
+    A helper function that formats a single post to include reactions and user_reacted.
     """
-    formatted_posts = []
-    for post in posts:
-        reaction = Reaction.objects.filter(user=author_id, post_id=post["id"]).first()
-        reaction_type = reaction.reaction if reaction else None
-        formatted_posts.append(
-            {
-                "id": post["id"],
-                "avatar": post["avatar"],
-                "author__username": post["author__username"],
-                "title": post["title"],
-                "subheader": post["subheader"],
-                "text": post["text"],
-                "created_at": post["created_at"],
-                "updated_at": post["updated_at"],
-                "reactions_count": {
-                    "like": post["like_count"],
-                    "love": post["love_count"],
-                    "angry": post["angry_count"],
-                    "celebrate": post["celebrate_count"],
-                },
-                "user_reacted": {
-                    "like": reaction_type == "like",
-                    "love": reaction_type == "love",
-                    "angry": reaction_type == "angry",
-                    "celebrate": reaction_type == "celebrate",
-                },
-            }
-        )
-    return formatted_posts
+    reaction = Reaction.objects.filter(user=author_id, post_id=post["id"]).first()
+    reaction_type = reaction.reaction if reaction else None
+    return {
+        "id": post["id"],
+        "avatar": post["avatar"],
+        "author__username": post["author__username"],
+        "title": post["title"],
+        "subheader": post["subheader"],
+        "text": post["text"],
+        "created_at": post["created_at"],
+        "updated_at": post["updated_at"],
+        "reactions_count": {
+            "like": post["like_count"],
+            "love": post["love_count"],
+            "angry": post["angry_count"],
+            "celebrate": post["celebrate_count"],
+        },
+        "user_reacted": {
+            "like": reaction_type == "like",
+            "love": reaction_type == "love",
+            "angry": reaction_type == "angry",
+            "celebrate": reaction_type == "celebrate",
+        },
+    }
 
 
 @api_view(["POST"])
@@ -274,7 +269,7 @@ def all_posts_view(request):
         "celebrate_count",
     )
 
-    formatted_posts = format_posts(posts, author_id)
+    formatted_posts = [format_single_post(post, author_id) for post in posts]
 
     return Response(formatted_posts, status=status.HTTP_200_OK)
 
