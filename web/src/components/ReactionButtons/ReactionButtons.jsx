@@ -17,11 +17,7 @@ const iconMap = {
  * ReactionButtons component allows users to react to a post with different reactions.
  *
  * @param initialReactions - An object containing the initial counts for each reaction type.
- * @param initialReactions.like - Initial count for 'like' reactions.
- * @param initialReactions.love - Initial count for 'love' reactions.
- * @param initialReactions.angry - Initial count for 'angry' reactions.
- * @param initialReactions.celebrate - Initial count for 'celebrate' reactions.
- * @param userReaction - The user's reaction to the post. Can be one of 'like', 'love', 'angry', 'celebrate', or null.
+ * @param userReaction - An object containing the user's reaction as a boolean value for each reaction type.
  *
  * @returns {JSX.Element} The rendered component.
  */
@@ -29,20 +25,34 @@ const ReactionButtons = ({
   initialReactions = { like: 0, love: 0, angry: 0, celebrate: 0 },
   userReaction = null,
 }) => {
+  console.log(userReaction);
   const [reaction, setReaction] = useState(userReaction);
   const [counts, setCounts] = useState(initialReactions);
 
   const handleReaction = (newReaction) => {
     setCounts((prevCounts) => {
       const updatedCounts = { ...prevCounts };
-      if (reaction === newReaction) {
-        updatedCounts[newReaction] -= 1;
-        setReaction(null);
-      } else {
-        if (reaction) updatedCounts[reaction] -= 1;
+
+      // Remove the previous reaction if it exists
+      Object.keys(reaction).forEach((type) => {
+        if (reaction[type]) {
+          updatedCounts[type] -= 1;
+          setReaction((prevReaction) => ({
+            ...prevReaction,
+            [type]: false,
+          }));
+        }
+      });
+
+      // Add the new reaction if it doesn't exist
+      if (!reaction[newReaction]) {
         updatedCounts[newReaction] += 1;
-        setReaction(newReaction);
+        setReaction((prevReaction) => ({
+          ...prevReaction,
+          [newReaction]: true,
+        }));
       }
+
       return updatedCounts;
     });
   };
@@ -54,7 +64,7 @@ const ReactionButtons = ({
         return (
           <Badge key={type} badgeContent={counts[type]} color="primary">
             <IconButton onClick={() => handleReaction(type)}>
-              <Icon color={reaction === type ? "primary" : "inherit"} />
+              <Icon color={reaction[type] ? "primary" : "inherit"} />
             </IconButton>
           </Badge>
         );

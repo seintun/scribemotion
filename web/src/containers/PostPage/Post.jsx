@@ -29,7 +29,7 @@ const Post = ({ initialPostDetails }) => {
     <Grid container spacing={2}>
       <Grid item xs={showAnalysis ? 7 : 12}>
         <PostDetails
-          {...postDetails}
+          postDetails={postDetails}
           menuItems={["Analyze", "Edit", "Delete"]}
           onMenuItemClick={handleMenuItemClick}
         />

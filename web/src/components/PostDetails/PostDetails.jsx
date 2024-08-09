@@ -13,16 +13,17 @@ import { red } from "@mui/material/colors";
 import { ActionMenuButton } from "../ActionMenuButton";
 import { ReactionButtons } from "../ReactionButtons";
 
-const PostDetails = ({
-  title,
-  subheader,
-  text,
-  avatar,
-  author__username,
-  created_at,
-  menuItems,
-  onMenuItemClick,
-}) => {
+const PostDetails = ({ postDetails, menuItems, onMenuItemClick }) => {
+  const {
+    author__username,
+    avatar,
+    created_at,
+    title,
+    subheader,
+    text,
+    reactions_count,
+    user_reacted,
+  } = postDetails;
   return (
     <Card sx={{ margin: 2, padding: 3 }}>
       <CardHeader
@@ -51,7 +52,10 @@ const PostDetails = ({
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <ReactionButtons />
+        <ReactionButtons
+          initialReactions={reactions_count}
+          userReaction={user_reacted}
+        />
       </CardActions>
     </Card>
   );
