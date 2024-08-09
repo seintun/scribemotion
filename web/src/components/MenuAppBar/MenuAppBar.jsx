@@ -42,9 +42,6 @@ const MenuAppBar = () => {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed">
         <Toolbar>
-          <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
-            <MenuIcon />
-          </IconButton>
           <AppLogo isMobile={isMobile} />
           {!isLoggedIn && <PreAuthButtons isMobile={isMobile} />}
           {isLoggedIn && (
