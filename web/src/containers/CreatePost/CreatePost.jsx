@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Alert, Container, Typography } from "@mui/material";
-import { FormPost } from "../../components/FormPost";
+import { PostForm } from "../../components/PostForm";
 import { useAuthContext } from "../../context/AuthContext";
 import useApi from "../../hooks/useApi";
 
-const CreatePost = () => {
+const CreatePost = ({ handleDismiss, ...props }) => {
   const { currentUser } = useAuthContext();
   const { success, fetchData } = useApi(`/create-post/`, "post");
 
@@ -32,25 +32,29 @@ const CreatePost = () => {
       username: currentUser,
     };
 
-    await fetchData(postData);
+    try {
+      await fetchData(postData);
 
-    if (success) {
+      setMessage("Post created successfully!");
+
+      // Clear the form fields after successful post creation
       setFormData({
         title: "",
         subheader: "",
         text: "",
         avatar: "",
       });
-      setMessage("Post created successfully");
-    } else {
-      setMessage("Failed to create post");
+
+      // Dismiss the dialog
+      handleDismiss();
+    } catch (error) {
+      setMessage("Failed to create post. Please try again.");
     }
   };
 
   return (
     <Container maxWidth="sm">
-      <Typography variant="h6">Create a New Post</Typography>
-      <FormPost
+      <PostForm
         formData={formData}
         handleChange={handleChange}
         handleSubmit={handleSubmit}

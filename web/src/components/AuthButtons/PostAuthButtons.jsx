@@ -1,6 +1,10 @@
 import React from "react";
 import { Button } from "@mui/material";
-import { AccountCircle, Logout as LogoutIcon } from "@mui/icons-material";
+import {
+  AccountCircle,
+  Logout as LogoutIcon,
+  NoteAdd,
+} from "@mui/icons-material";
 
 /**
  * PostAuthButtons component that displays
@@ -10,9 +14,19 @@ const PostAuthButtons = ({
   isMobile,
   currentUser,
   openDialog,
+  handleCreatePostClick,
   handleProfileClick,
 }) => (
   <>
+    {/* add create new post button with pencil icon */}
+    <Button
+      size="large"
+      color="inherit"
+      onClick={handleCreatePostClick}
+      startIcon={<NoteAdd />}
+    >
+      {!isMobile && "New Post"}
+    </Button>
     <Button
       size="large"
       color="inherit"

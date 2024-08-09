@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import { AnalysisCard } from "../../components/AnalysisCard";
-import { ConfirmDialog } from "../../components/ConfirmDialog";
+import { ConfirmDialog } from "../../components/Dialog";
 import { PostDetails } from "../../components/PostDetails";
 import useApi from "../../hooks/useApi";
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { LinearProgress, Paper } from "@mui/material";
+import { LinearProgress, Paper, Typography } from "@mui/material";
 import useAuthContext from "../../hooks/useAuth";
 import useApi from "../../hooks/useApi";
 import { EmptyPage } from "../../components/EmptyPage";
@@ -48,6 +48,9 @@ const ProfilePage = ({ defaultFilter = "user" }) => {
 
   return (
     <Paper elevation={3} sx={{ margin: 2, padding: 2 }}>
+      <Typography variant="h5" align="center">
+        {username ?? currentUser}'s Posts
+      </Typography>
       <PostPage
         data={posts}
         fetchMorePosts={fetchMorePosts}

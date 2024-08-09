@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { AppBar, Box, Toolbar, IconButton, useMediaQuery } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { AppLogo } from "../AppLogo";
-import { ConfirmDialog } from "../ConfirmDialog";
+import { ConfirmDialog, PopupDialog } from "../Dialog";
+import { CreatePost } from "../../containers/CreatePost";
 
 import { useAuthContext } from "../../context/AuthContext";
 import useAuth from "../../hooks/useAuth";
@@ -14,13 +15,21 @@ const MenuAppBar = () => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const { isLoggedIn, currentUser } = useAuthContext();
   const { logout } = useAuth();
-  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [isLogoutDialogOpen, setLogoutDialogOpen] = useState(false);
+  const [isPostFormDialogOpen, setPostFormDialogOpen] = useState(false);
 
-  const openDialog = () => setDialogOpen(true);
-  const closeDialog = () => setDialogOpen(false);
+  const openLogoutDialog = () => setLogoutDialogOpen(true);
+  const closeLogoutDialog = () => setLogoutDialogOpen(false);
   const handleLogout = () => {
     logout();
-    setDialogOpen(false);
+    setLogoutDialogOpen(false);
+  };
+
+  const openPostFormDialog = () => setPostFormDialogOpen(true);
+  const closePostFormDialog = () => setPostFormDialogOpen(false);
+
+  const handleCreatePostClick = () => {
+    openPostFormDialog();
   };
 
   const handleProfileClick = () => {
@@ -42,7 +51,8 @@ const MenuAppBar = () => {
             <PostAuthButtons
               isMobile={isMobile}
               currentUser={currentUser}
-              openDialog={openDialog}
+              openDialog={openLogoutDialog}
+              handleCreatePostClick={handleCreatePostClick}
               handleProfileClick={handleProfileClick}
             />
           )}
@@ -52,9 +62,15 @@ const MenuAppBar = () => {
       <ConfirmDialog
         title={"Are you sure you want to logout?"}
         content={"Press 'Confirm Logout' to proceed with logout."}
-        open={isDialogOpen}
-        onClose={closeDialog}
+        open={isLogoutDialogOpen}
+        onClose={closeLogoutDialog}
         onConfirm={handleLogout}
+      />
+      <PopupDialog
+        title={"Create New Post"}
+        component={<CreatePost handleDismiss={closePostFormDialog} />}
+        open={isPostFormDialogOpen}
+        onClose={closePostFormDialog}
       />
     </Box>
   );

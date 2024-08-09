@@ -4,7 +4,6 @@ import useAuthContext from "../../hooks/useAuth";
 import useApi from "../../hooks/useApi";
 import { EmptyPage } from "../../components/EmptyPage";
 import { SelectDropdown } from "../../components/SelectDropdown";
-import { CreatePost } from "../CreatePost";
 import { PostPage } from "../PostPage";
 
 const Homepage = ({ defaultFilter = "all" }) => {
@@ -59,7 +58,6 @@ const Homepage = ({ defaultFilter = "all" }) => {
           handleFilterChange={handleFilterChange}
         />
       )}
-      <CreatePost />
       <PostPage
         data={posts}
         fetchMorePosts={fetchMorePosts}

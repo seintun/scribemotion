@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, TextField, Button } from "@mui/material";
 
-const FormPost = ({ formData, handleChange, handleSubmit }) => (
+const PostForm = ({ formData, handleChange, handleSubmit }) => (
   <Box component="form" onSubmit={handleSubmit}>
     <TextField
       label="Title"
@@ -47,4 +47,4 @@ const FormPost = ({ formData, handleChange, handleSubmit }) => (
   </Box>
 );
 
-export default FormPost;
+export default PostForm;
