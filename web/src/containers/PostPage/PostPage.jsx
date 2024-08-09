@@ -3,7 +3,7 @@ import { Badge, CircularProgress, Typography } from "@mui/material";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Post from "./Post";
 
-const PostPage = ({ data, fetchMorePosts, hasMore }) => (
+const PostPage = ({ data, fetchMorePosts, hasMore, isLoggedIn }) => (
   <InfiniteScroll
     dataLength={data.length}
     next={fetchMorePosts}
@@ -23,7 +23,7 @@ const PostPage = ({ data, fetchMorePosts, hasMore }) => (
           overlap="circular"
           sx={{ left: 15, top: 15 }}
         />
-        <Post initialPostDetails={post} />
+        <Post initialPostDetails={post} isLoggedIn={isLoggedIn} />
       </div>
     ))}
   </InfiniteScroll>

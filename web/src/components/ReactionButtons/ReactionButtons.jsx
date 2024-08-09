@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import { IconButton, Badge, Tooltip } from "@mui/material";
+import {
+  Favorite as FavoriteIcon,
+  ThumbUp as ThumbUpIcon,
+  SentimentVeryDissatisfied as SentimentVeryDissatisfiedIcon,
+  EmojiEvents as EmojiEventsIcon,
+} from "@mui/icons-material";
 
 const iconMap = {
   like: ThumbUpIcon,
@@ -24,11 +25,13 @@ const iconMap = {
 const ReactionButtons = ({
   initialReactions = { like: 0, love: 0, angry: 0, celebrate: 0 },
   userReaction = null,
+  isLoggedIn = false,
 }) => {
   const [reaction, setReaction] = useState(userReaction);
   const [counts, setCounts] = useState(initialReactions);
 
   const handleReaction = (newReaction) => {
+    if (!isLoggedIn) return;
     setCounts((prevCounts) => {
       const updatedCounts = { ...prevCounts };
 
@@ -62,9 +65,17 @@ const ReactionButtons = ({
         const Icon = iconMap[type];
         return (
           <Badge key={type} badgeContent={counts[type]} color="primary">
-            <IconButton onClick={() => handleReaction(type)}>
-              <Icon color={reaction[type] ? "primary" : "inherit"} />
-            </IconButton>
+            <Tooltip title={isLoggedIn ? "" : "Please log in to react"}>
+              <span>
+                <IconButton
+                  onClick={() => handleReaction(type)}
+                  disabled={!isLoggedIn}
+                  style={{ pointerEvents: !isLoggedIn ? "none" : "auto" }}
+                >
+                  <Icon color={reaction[type] ? "primary" : "inherit"} />
+                </IconButton>
+              </span>
+            </Tooltip>
           </Badge>
         );
       })}

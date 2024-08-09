@@ -4,7 +4,7 @@ import { AnalysisCard } from "../../components/AnalysisCard";
 import { PostDetails } from "../../components/PostDetails";
 import useApi from "../../hooks/useApi";
 
-const Post = ({ initialPostDetails }) => {
+const Post = ({ initialPostDetails, isLoggedIn }) => {
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [postDetails] = useState(initialPostDetails);
 
@@ -32,6 +32,7 @@ const Post = ({ initialPostDetails }) => {
           postDetails={postDetails}
           menuItems={["Analyze", "Edit", "Delete"]}
           onMenuItemClick={handleMenuItemClick}
+          isLoggedIn={isLoggedIn}
         />
       </Grid>
       {showAnalysis && (

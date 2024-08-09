@@ -13,7 +13,12 @@ import { red } from "@mui/material/colors";
 import { ActionMenuButton } from "../ActionMenuButton";
 import { ReactionButtons } from "../ReactionButtons";
 
-const PostDetails = ({ postDetails, menuItems, onMenuItemClick }) => {
+const PostDetails = ({
+  postDetails,
+  menuItems,
+  onMenuItemClick,
+  isLoggedIn,
+}) => {
   const {
     author__username,
     avatar,
@@ -55,6 +60,7 @@ const PostDetails = ({ postDetails, menuItems, onMenuItemClick }) => {
         <ReactionButtons
           initialReactions={reactions_count}
           userReaction={user_reacted}
+          isLoggedIn={isLoggedIn}
         />
       </CardActions>
     </Card>

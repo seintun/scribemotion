@@ -8,7 +8,7 @@ import { CreatePost } from "../CreatePost";
 import { PostPage } from "../PostPage";
 
 const Homepage = ({ defaultFilter = "all" }) => {
-  const { currentUser } = useAuthContext();
+  const { currentUser, isLoggedIn } = useAuthContext();
   const [posts, setPosts] = useState([]);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -64,6 +64,7 @@ const Homepage = ({ defaultFilter = "all" }) => {
         data={posts}
         fetchMorePosts={fetchMorePosts}
         hasMore={hasMore}
+        isLoggedIn={isLoggedIn}
       />
     </Paper>
   );
