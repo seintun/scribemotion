@@ -5,7 +5,7 @@ import { ConfirmDialog } from "../../components/Dialog";
 import { PostDetails } from "../../components/PostDetails";
 import useApi from "../../hooks/useApi";
 
-const Post = ({ initialPostDetails, isLoggedIn }) => {
+const Post = ({ initialPostDetails, isLoggedIn, removeDeletedPost }) => {
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [postDetails] = useState(initialPostDetails);
@@ -29,6 +29,7 @@ const Post = ({ initialPostDetails, isLoggedIn }) => {
   const closeDialog = () => setDialogOpen(false);
   const handleDelete = () => {
     deletePost();
+    removeDeletedPost(postDetails.id);
     setDialogOpen(false);
   };
 

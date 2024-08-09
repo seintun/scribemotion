@@ -29,7 +29,7 @@ const Homepage = ({ defaultFilter = "all" }) => {
 
   useEffect(() => {
     if (data) {
-      setPosts((prevPosts) => [...prevPosts, ...data]);
+      setPosts((previousPosts) => [...previousPosts, ...data]);
       setHasMore(data.length === limit);
     }
   }, [data]);
@@ -38,6 +38,10 @@ const Homepage = ({ defaultFilter = "all" }) => {
     if (hasMore) {
       setOffset((prevOffset) => prevOffset + limit);
     }
+  };
+
+  const removeDeletedPost = (postId) => {
+    setPosts((posts) => posts.filter((post) => post.id !== postId));
   };
 
   // Handle filter change for changes in filter
@@ -62,6 +66,7 @@ const Homepage = ({ defaultFilter = "all" }) => {
         data={posts}
         fetchMorePosts={fetchMorePosts}
         hasMore={hasMore}
+        removeDeletedPost={removeDeletedPost}
         isLoggedIn={isLoggedIn}
       />
     </Paper>

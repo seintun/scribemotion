@@ -18,9 +18,7 @@ const PopupDialog = ({ title, component, open, onClose }) => {
     <Dialog open={open} TransitionComponent={Transition} keepMounted>
       <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          {component}
-        </DialogContentText>
+        <DialogContent id="alert-dialog-description">{component}</DialogContent>
       </DialogContent>
       <DialogActions>
         <Button onClick={() => onClose(false)} color="primary">
