@@ -38,7 +38,6 @@ const PostDetails = ({
           <ActionMenuButton
             menuItems={menuItems}
             onMenuItemClick={onMenuItemClick}
-            isLoggedIn={isLoggedIn}
           />
         }
         title={title}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
 import { MoreVert as MoreVertIcon } from "@mui/icons-material";
 
-const ActionMenuButton = ({ menuItems = [], onMenuItemClick, isLoggedIn }) => {
+const ActionMenuButton = ({ menuItems = [], onMenuItemClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleMenuOpen = (event) => {

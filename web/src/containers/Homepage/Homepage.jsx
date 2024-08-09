@@ -68,6 +68,7 @@ const Homepage = ({ defaultFilter = "all" }) => {
         hasMore={hasMore}
         removeDeletedPost={removeDeletedPost}
         isLoggedIn={isLoggedIn}
+        currentUser={currentUser}
       />
     </Paper>
   );

@@ -6,16 +6,22 @@ import { PostDetails } from "../../components/PostDetails";
 import { CreatePost } from "../../containers/CreatePost";
 import useApi from "../../hooks/useApi";
 
-const Post = ({ initialPostDetails, isLoggedIn, removeDeletedPost }) => {
+const Post = ({
+  initialPostDetails,
+  isLoggedIn,
+  currentUser,
+  removeDeletedPost,
+}) => {
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [isEditDialogOpen, setEditDialogOpen] = useState(false);
   const [postDetails] = useState(initialPostDetails);
 
-  // Actions available based on user login status
-  const avaliableActionsList = isLoggedIn
-    ? ["Analyze", "Edit", "Delete"]
-    : ["Analyze"];
+  // Actions available based on logged in user and post author
+  const avaliableActionsList =
+    isLoggedIn && currentUser === postDetails.author__username
+      ? ["Analyze", "Edit", "Delete"]
+      : ["Analyze"];
 
   const { data, fetchData: analyzeSentiment } = useApi(
     "/analyze-sentiment/",

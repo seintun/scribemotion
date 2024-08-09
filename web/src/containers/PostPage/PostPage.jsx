@@ -9,6 +9,7 @@ const PostPage = ({
   hasMore,
   removeDeletedPost,
   isLoggedIn,
+  currentUser,
 }) => (
   <InfiniteScroll
     dataLength={data.length}
@@ -32,6 +33,7 @@ const PostPage = ({
         <Post
           initialPostDetails={post}
           isLoggedIn={isLoggedIn}
+          currentUser={currentUser}
           removeDeletedPost={removeDeletedPost}
         />
       </div>
