@@ -95,12 +95,16 @@ def verify_session_token(request):
     return None, None
 
 
-def filter_posts(filter, author_id):
+def filter_posts(filter, author_id=None, post_id=None):
     """
-    A helper function that filters posts based on the filter and author_id.
+    A helper function that filters posts based on the filter, author_id, and post_id.
     """
+    if filter == "post" and post_id:
+        return Post.objects.filter(id=post_id)
+
     if filter == "user" and author_id:
         return Post.objects.filter(author=author_id)
+
     return Post.objects.all()
 
 
@@ -274,11 +278,43 @@ def all_posts_view(request):
     return Response(formatted_posts, status=status.HTTP_200_OK)
 
 
-@api_view(["POST", "DELETE", "PUT"])
+@api_view(["GET", "POST", "DELETE", "PUT"])
 def post_view(request, post_id=None):
     """
-    A view function that allows authenticated users to create, edit, or delete posts.
+    A view function that allows authenticated users to get, create, edit, or delete post.
     """
+    if request.method == "GET":
+        if post_id is None:
+            return Response(
+                {"detail": "Post ID is required."}, status=status.HTTP_400_BAD_REQUEST
+            )
+        username = request.GET.get("username", "")
+        author_id = get_user_by_username(username)
+        posts_query = filter_posts("post", post_id)
+        posts_query = annotate_posts(posts_query)
+
+        post = (
+            posts_query.select_related("author")
+            .values(
+                "id",
+                "avatar",
+                "author__username",
+                "title",
+                "subheader",
+                "text",
+                "created_at",
+                "updated_at",
+                "like_count",
+                "love_count",
+                "angry_count",
+                "celebrate_count",
+            )
+            .get(id=post_id)
+        )
+
+        formatted_post = format_single_post(post, author_id)
+
+        return Response(formatted_post, status=status.HTTP_200_OK)
 
     if request.method == "POST":
         # Extract post data from the request

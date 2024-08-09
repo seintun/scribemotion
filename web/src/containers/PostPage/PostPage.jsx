@@ -19,7 +19,7 @@ const PostPage = () => {
 
   useEffect(() => {
     fetchPost();
-  }, [postId]);
+  }, [postId, currentUser]);
 
   useEffect(() => {
     if (data) {
@@ -30,19 +30,18 @@ const PostPage = () => {
 
   if (loading) return <LinearProgress color="secondary" />;
   if (!post) return <EmptyPage />;
-  return <></>;
-  // return (
-  //   <Paper elevation={3} sx={{ margin: 2, padding: 2 }}>
-  //     <Typography variant="h5" align="center">
-  //       Post Details
-  //     </Typography>
-  //     <Post
-  //       initialPostDetails={post}
-  //       isLoggedIn={!!currentUser}
-  //       currentUser={currentUser}
-  //     />
-  //   </Paper>
-  // );
+  return (
+    <Paper elevation={3} sx={{ margin: 2, padding: 2 }}>
+      <Typography variant="h5" align="center">
+        Post Details
+      </Typography>
+      <Post
+        initialPostDetails={post}
+        isLoggedIn={!!currentUser}
+        currentUser={currentUser}
+      />
+    </Paper>
+  );
 };
 
 export default PostPage;
