@@ -7,8 +7,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from api.services.sentiment_analysis import analyze_sentiment
-from api.models import User, Post, Reaction
-from api.serializers import PostSerializer
+from api.models import User, Post, Reaction, Comment
+from api.serializers import PostSerializer, CommentSerializer
 
 
 @api_view(["POST"])
@@ -416,3 +416,90 @@ def reaction_view(request):
             {"error": "Previous reaction not found or does not match."},
             status=status.HTTP_400_BAD_REQUEST,
         )
+
+
+@api_view(["POST"])
+def create_comment_view(request):
+    if request.method == "POST":
+        data = request.data
+        post_id = data.get("post_id")
+        username = data.get("username")
+        title = data.get("title")
+        subheader = data.get("subheader")
+        text = data.get("text")
+        avatar = data.get("avatar")
+
+        # Validate required fields
+        if (
+            not post_id
+            or not username
+            or not title
+            or not subheader
+            or not text
+            or not avatar
+        ):
+            return Response(
+                {
+                    "error": "post_id, username, title, subheader, text, and avatar are required."
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Get the author by username
+        author = get_user_by_username(username)
+        if not author:
+            return Response(
+                {"error": "User not found."}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Get the post by post_id
+        try:
+            post = Post.objects.get(id=post_id)
+        except Post.DoesNotExist:
+            return Response(
+                {"error": "Post not found."}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Create and save the new comment
+        comment = Comment(
+            post=post,
+            author=author,
+            title=title,
+            subheader=subheader,
+            text=text,
+            avatar=avatar,
+        )
+        comment.save()
+        serializer = CommentSerializer(comment)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(["POST"])
+def get_comments_view(request):
+    if request.method == "POST":
+        data = request.data
+        post_id = data.get("post_id")
+        if not post_id:
+            return Response(
+                {"error": "post_id is required."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            post = Post.objects.get(id=post_id)
+        except Post.DoesNotExist:
+            return Response(
+                {"error": "Post not found."}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        comments = Comment.objects.filter(post=post)
+        serializer = CommentSerializer(comments, many=True)
+        serialized_data = serializer.data
+
+        # Update each comment with the author's username
+        for comment in serialized_data:
+            author_id = comment['author']
+            author = User.objects.get(id=author_id)
+            comment['author__username'] = author.username
+
+        return Response(serialized_data, status=status.HTTP_200_OK)

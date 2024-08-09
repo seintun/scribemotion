@@ -13,23 +13,32 @@ const PostPage = () => {
 
   const {
     loading,
-    data,
+    data: postData,
     fetchData: fetchPost,
   } = useApi(`/post/${postId}?username=${currentUser}`, "get");
 
+  const { data: commentData, fetchData: fetchComments } = useApi(
+    `/comments/`,
+    "post"
+  );
+
   useEffect(() => {
     fetchPost();
+    fetchComments({
+      post_id: postId,
+      username: currentUser,
+    });
   }, [postId, currentUser]);
 
   useEffect(() => {
-    if (data) {
-      console.log(data);
-      setPost(data);
+    if (postData) {
+      setPost(postData);
     }
-  }, [data]);
+  }, [postData]);
 
   if (loading) return <LinearProgress color="secondary" />;
   if (!post) return <EmptyPage />;
+
   return (
     <Paper elevation={3} sx={{ margin: 2, padding: 2 }}>
       <Typography variant="h5" align="center">
@@ -40,6 +49,17 @@ const PostPage = () => {
         isLoggedIn={isLoggedIn}
         currentUser={currentUser}
       />
+      {/* Comment Section */}
+      {commentData &&
+        commentData.map((comment) => (
+          <Post
+            key={comment.id}
+            initialPostDetails={comment}
+            isLoggedIn={isLoggedIn}
+            currentUser={currentUser}
+            isComment
+          />
+        ))}
     </Paper>
   );
 };

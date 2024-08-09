@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
+
 import { AnalysisCard } from "../../components/AnalysisCard";
 import { ConfirmDialog, PopupDialog } from "../../components/Dialog";
 import { PostDetails } from "../../components/PostDetails";
 import { CreatePost } from "../../containers/CreatePost";
 import useApi from "../../hooks/useApi";
 
-const Post = ({ initialPostDetails, isLoggedIn, currentUser }) => {
+const Post = ({
+  initialPostDetails,
+  isLoggedIn,
+  isComment = false, // Default value is false for posts
+  currentUser,
+}) => {
   const navigate = useNavigate();
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -15,10 +21,14 @@ const Post = ({ initialPostDetails, isLoggedIn, currentUser }) => {
   const [postDetails] = useState(initialPostDetails);
 
   // Actions available based on logged in user and post author
-  const avaliableActionsList =
+  const postActions =
     isLoggedIn && currentUser === postDetails.author__username
       ? ["View Post", "Analyze", "Edit", "Delete"]
       : ["View Post", "Analyze"];
+
+  // Actions available for comments
+  // @feature: Implement comment edit, react and reply
+  const avaliableActionsList = isComment ? ["Analyze", "Delete"] : postActions;
 
   const { data, fetchData: analyzeSentiment } = useApi(
     "/analyze-sentiment/",
@@ -42,8 +52,6 @@ const Post = ({ initialPostDetails, isLoggedIn, currentUser }) => {
   };
 
   const handleReaction = (newReaction, prevReaction) => {
-    console.log("Reaction: Post", newReaction, prevReaction);
-
     // Check if all previous reactions are false
     // which means the user is reacting for the first time
     const allFalse = Object.values(prevReaction).every(
@@ -96,6 +104,7 @@ const Post = ({ initialPostDetails, isLoggedIn, currentUser }) => {
           menuItems={avaliableActionsList}
           onMenuItemClick={handleMenuItemClick}
           isLoggedIn={isLoggedIn}
+          isComment={isComment}
           updateReactions={handleReaction}
         />
       </Grid>

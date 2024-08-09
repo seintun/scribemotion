@@ -8,7 +8,7 @@ import {
   CardHeader,
   Typography,
 } from "@mui/material";
-import { red } from "@mui/material/colors";
+import { red, grey } from "@mui/material/colors";
 
 import { ActionMenuButton } from "../ActionMenuButton";
 import { ReactionButtons } from "../ReactionButtons";
@@ -18,6 +18,7 @@ const PostDetails = ({
   menuItems,
   onMenuItemClick,
   isLoggedIn,
+  isComment,
   updateReactions,
 }) => {
   const {
@@ -33,7 +34,14 @@ const PostDetails = ({
   } = postDetails;
 
   return (
-    <Card key={id} sx={{ margin: 2, padding: 3 }}>
+    <Card
+      key={id}
+      sx={{
+        margin: 2,
+        padding: 3,
+        bgcolor: isComment ? grey[300] : undefined,
+      }}
+    >
       <CardHeader
         avatar={<Avatar sx={{ bgcolor: red[500] }}>{avatar}</Avatar>}
         action={
@@ -43,7 +51,8 @@ const PostDetails = ({
           />
         }
         title={title}
-        subheader={`by ${author__username} on ${moment(created_at).format(
+        subheader={`${isComment ? "commented" : "posted"}
+         by ${author__username} on ${moment(created_at).format(
           "MM/DD/YYYY HH:mm:ss"
         )}`}
       />
@@ -59,14 +68,16 @@ const PostDetails = ({
           {text}
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
-        <ReactionButtons
-          initialReactions={reactions_count}
-          userReaction={user_reacted}
-          isLoggedIn={isLoggedIn}
-          updateReactions={updateReactions}
-        />
-      </CardActions>
+      {!isComment && (
+        <CardActions disableSpacing>
+          <ReactionButtons
+            initialReactions={reactions_count}
+            userReaction={user_reacted}
+            isLoggedIn={isLoggedIn}
+            updateReactions={updateReactions}
+          />
+        </CardActions>
+      )}
     </Card>
   );
 };
