@@ -14,6 +14,6 @@ urlpatterns = [
         name="analyze-sentiment",
     ),
     path("posts/", views.all_posts_view, name="all-posts"),
-    path("create-post/", views.create_post_view, name="create-post"),
-    path("post/<uuid:post_id>/", views.post_views, name="post-detail"),
+    path("post/", views.post_view, name="create-post"),
+    path("post/<uuid:post_id>/", views.post_view, name="post-detail"),
 ]

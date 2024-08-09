@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { Alert, Container, Typography } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Alert, Container } from "@mui/material";
 import { PostForm } from "../../components/PostForm";
 import { useAuthContext } from "../../context/AuthContext";
 import useApi from "../../hooks/useApi";
 
-const CreatePost = ({ handleDismiss, ...props }) => {
+const CreatePost = ({ method, postDetails, handleDismiss, ...props }) => {
   const { currentUser } = useAuthContext();
-  const { success, fetchData } = useApi(`/create-post/`, "post");
+  const { fetchData: createPost } = useApi(`/post/`, "post");
+  const { fetchData: editPost } = useApi(`/post/`, "put");
 
   const [formData, setFormData] = useState({
     title: "",
@@ -15,6 +16,18 @@ const CreatePost = ({ handleDismiss, ...props }) => {
     avatar: "",
   });
   const [message, setMessage] = useState("");
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    if (method === "put" && postDetails) {
+      setFormData({
+        title: postDetails.title || "",
+        subheader: postDetails.subheader || "",
+        text: postDetails.text || "",
+        avatar: postDetails.avatar || "",
+      });
+    }
+  }, [method, postDetails]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -29,13 +42,19 @@ const CreatePost = ({ handleDismiss, ...props }) => {
 
     const postData = {
       ...formData,
+      post_id: postDetails?.id,
       username: currentUser,
     };
 
     try {
-      await fetchData(postData);
+      if (method === "post") {
+        await createPost(postData);
+      } else if (method === "put") {
+        await editPost(postData);
+      }
 
-      setMessage("Post created successfully!");
+      setMessage("Completed successfully!");
+      setSuccess(true);
 
       // Clear the form fields after successful post creation
       setFormData({
@@ -48,7 +67,7 @@ const CreatePost = ({ handleDismiss, ...props }) => {
       // Dismiss the dialog
       handleDismiss();
     } catch (error) {
-      setMessage("Failed to create post. Please try again.");
+      setMessage("Please try again.");
     }
   };
 

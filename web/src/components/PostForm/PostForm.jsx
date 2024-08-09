@@ -42,7 +42,7 @@ const PostForm = ({ formData, handleChange, handleSubmit }) => (
       margin="normal"
     />
     <Button type="submit" variant="contained" color="primary" fullWidth>
-      Create Post
+      Submit
     </Button>
   </Box>
 );

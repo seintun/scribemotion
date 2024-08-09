@@ -67,7 +67,7 @@ def get_user_by_username(username):
     try:
         return User.objects.get(username=username)
     except User.DoesNotExist:
-        return None
+        return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
 
 
 def get_user_details(user, session_token, request):
@@ -279,40 +279,44 @@ def all_posts_view(request):
     return Response(formatted_posts, status=status.HTTP_200_OK)
 
 
-@api_view(["POST"])
-def create_post_view(request):
+@api_view(["POST", "DELETE", "PUT"])
+def post_view(request, post_id=None):
     """
-    A view function that allows authenticated users to create new posts.
+    A view function that allows authenticated users to create, edit, or delete posts.
     """
 
-    # Extract post data from the request
-    data = request.data
-    username = data.get("username")
+    if request.method == "POST":
+        # Extract post data from the request
+        data = request.data
+        username = data.get("username")
+        data["author"] = get_user_by_username(username).id
+
+        # Serialize and save the new post
+        serializer = PostSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     try:
-        author = User.objects.get(username=username)
-        data["author"] = author.id  # Set the author to the found user's ID
-    except User.DoesNotExist:
-        return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+        post = Post.objects.get(id=post_id or request.data.get("post_id"))
+    except Post.DoesNotExist:
+        return Response({"detail": "Post not found."}, status=status.HTTP_404_NOT_FOUND)
 
-    # Serialize and save the new post
-    serializer = PostSerializer(data=data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(["DELETE"])
-def post_views(request, post_id):
-    """
-    A view function that allows authenticated users to delete a post by its ID.
-    """
-    try:
-        post = Post.objects.get(id=post_id)
+    if request.method == "DELETE":
         post.delete()
         return Response(
             {"detail": "Post deleted successfully."}, status=status.HTTP_204_NO_CONTENT
         )
-    except Post.DoesNotExist:
-        return Response({"detail": "Post not found."}, status=status.HTTP_404_NOT_FOUND)
+    elif request.method == "PUT":
+        # Extract post data from the request
+        data = request.data
+        username = data.get("username")
+        data["author"] = get_user_by_username(username).id
+
+        serializer = PostSerializer(post, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

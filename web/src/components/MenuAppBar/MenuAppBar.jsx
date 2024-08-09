@@ -68,7 +68,9 @@ const MenuAppBar = () => {
       />
       <PopupDialog
         title={"Create New Post"}
-        component={<CreatePost handleDismiss={closePostFormDialog} />}
+        component={
+          <CreatePost method="post" handleDismiss={closePostFormDialog} />
+        }
         open={isPostFormDialogOpen}
         onClose={closePostFormDialog}
       />

@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import { AnalysisCard } from "../../components/AnalysisCard";
-import { ConfirmDialog } from "../../components/Dialog";
+import { ConfirmDialog, PopupDialog } from "../../components/Dialog";
 import { PostDetails } from "../../components/PostDetails";
+import { CreatePost } from "../../containers/CreatePost";
 import useApi from "../../hooks/useApi";
 
 const Post = ({ initialPostDetails, isLoggedIn, removeDeletedPost }) => {
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [isDialogOpen, setDialogOpen] = useState(false);
+  const [isEditDialogOpen, setEditDialogOpen] = useState(false);
   const [postDetails] = useState(initialPostDetails);
 
   // Actions available based on user login status
@@ -27,6 +29,8 @@ const Post = ({ initialPostDetails, isLoggedIn, removeDeletedPost }) => {
 
   const openDialog = () => setDialogOpen(true);
   const closeDialog = () => setDialogOpen(false);
+  const openEditDialog = () => setEditDialogOpen(true);
+  const closeEditDialog = () => setEditDialogOpen(false);
   const handleDelete = () => {
     deletePost();
     removeDeletedPost(postDetails.id);
@@ -40,6 +44,8 @@ const Post = ({ initialPostDetails, isLoggedIn, removeDeletedPost }) => {
       analyzeSentiment({ text: postDetails.text });
     } else if (menuItem === "Delete") {
       openDialog();
+    } else if (menuItem === "Edit") {
+      openEditDialog();
     }
   };
 
@@ -68,6 +74,18 @@ const Post = ({ initialPostDetails, isLoggedIn, removeDeletedPost }) => {
         open={isDialogOpen}
         onClose={closeDialog}
         onConfirm={handleDelete}
+      />
+      <PopupDialog
+        title={"Edit Post"}
+        component={
+          <CreatePost
+            method="put"
+            postDetails={postDetails}
+            handleDismiss={closeEditDialog}
+          />
+        }
+        open={isEditDialogOpen}
+        onClose={closeEditDialog}
       />
     </Grid>
   );
