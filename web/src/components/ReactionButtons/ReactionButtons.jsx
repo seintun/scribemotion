@@ -25,7 +25,6 @@ const ReactionButtons = ({
   initialReactions = { like: 0, love: 0, angry: 0, celebrate: 0 },
   userReaction = null,
 }) => {
-  console.log(userReaction);
   const [reaction, setReaction] = useState(userReaction);
   const [counts, setCounts] = useState(initialReactions);
 

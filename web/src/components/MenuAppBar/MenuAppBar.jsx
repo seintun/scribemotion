@@ -19,7 +19,6 @@ const MenuAppBar = () => {
   const openDialog = () => setDialogOpen(true);
   const closeDialog = () => setDialogOpen(false);
   const handleLogout = () => {
-    console.log("User logged out");
     logout();
     setDialogOpen(false);
   };
