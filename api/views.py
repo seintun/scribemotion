@@ -1,4 +1,5 @@
 from django.db import IntegrityError
+from django.db.models import Count, Q
 from django.http import HttpRequest, HttpResponse
 from django.contrib.auth import login, logout, authenticate
 from django.middleware.csrf import get_token
@@ -6,7 +7,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from api.services.sentiment_analysis import analyze_sentiment
-from api.models import User, Post
+from api.models import User, Post, Reaction
 from api.serializers import PostSerializer
 
 
@@ -59,6 +60,16 @@ def register_view(request):
         )
 
 
+def get_user_by_username(username):
+    """
+    A helper function that returns a user given a username
+    """
+    try:
+        return User.objects.get(username=username)
+    except User.DoesNotExist:
+        return None
+
+
 def get_user_details(user, session_token, request):
     """
     A helper function that returns user details for a given user.
@@ -82,6 +93,62 @@ def verify_session_token(request):
         if user.is_authenticated:
             return user, session_token
     return None, None
+
+
+def filter_posts(filter, author_id):
+    """
+    A helper function that filters posts based on the filter and author_id.
+    """
+    if filter == "user" and author_id:
+        return Post.objects.filter(author=author_id)
+    return Post.objects.all()
+
+
+def annotate_posts(posts_query):
+    """
+    A helper function that annotates posts with reaction counts.
+    """
+    return posts_query.annotate(
+        like_count=Count("reaction", filter=Q(reaction__reaction="like")),
+        love_count=Count("reaction", filter=Q(reaction__reaction="love")),
+        angry_count=Count("reaction", filter=Q(reaction__reaction="angry")),
+        celebrate_count=Count("reaction", filter=Q(reaction__reaction="celebrate")),
+    )
+
+
+def format_posts(posts, author_id):
+    """
+    A helper function that formats posts to include reactions and user_reacted.
+    """
+    formatted_posts = []
+    for post in posts:
+        reaction = Reaction.objects.filter(user=author_id, post_id=post["id"]).first()
+        reaction_type = reaction.reaction if reaction else None
+        formatted_posts.append(
+            {
+                "id": post["id"],
+                "avatar": post["avatar"],
+                "author__username": post["author__username"],
+                "title": post["title"],
+                "subheader": post["subheader"],
+                "text": post["text"],
+                "created_at": post["created_at"],
+                "updated_at": post["updated_at"],
+                "reactions_count": {
+                    "like": post["like_count"],
+                    "love": post["love_count"],
+                    "angry": post["angry_count"],
+                    "celebrate": post["celebrate_count"],
+                },
+                "user_reacted": {
+                    "like": reaction_type == "like",
+                    "love": reaction_type == "love",
+                    "angry": reaction_type == "angry",
+                    "celebrate": reaction_type == "celebrate",
+                },
+            }
+        )
+    return formatted_posts
 
 
 @api_view(["POST"])
@@ -177,26 +244,20 @@ def sentiment_analysis_view(request):
 @api_view(["GET"])
 def all_posts_view(request):
     """
-    A view function that returns posts in a paginated manner
+    A view function that returns all posts with pagination.
     """
     offset = int(request.GET.get("offset", 0))
     limit = int(request.GET.get("limit", 5))
     filter = request.GET.get("filter", "all")
     username = request.GET.get("user", "")
 
-    if filter == "user":
-        try:
-            author_id = User.objects.get(username=username)
-            posts_query = Post.objects.filter(author=author_id)
-        except User.DoesNotExist:
-            return Response(
-                {"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND
-            )
-    else:
-        posts_query = Post.objects.all()
+    author_id = get_user_by_username(username)
+    if filter == "user" and not author_id:
+        return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
 
-    # Order posts by creation date in descending order
+    posts_query = filter_posts(filter, author_id)
     posts_query = posts_query.order_by("-created_at")
+    posts_query = annotate_posts(posts_query)
 
     posts = posts_query.select_related("author")[offset : offset + limit].values(
         "id",
@@ -207,9 +268,15 @@ def all_posts_view(request):
         "text",
         "created_at",
         "updated_at",
+        "like_count",
+        "love_count",
+        "angry_count",
+        "celebrate_count",
     )
 
-    return Response(posts, status=status.HTTP_200_OK)
+    formatted_posts = format_posts(posts, author_id)
+
+    return Response(formatted_posts, status=status.HTTP_200_OK)
 
 
 @api_view(["POST"])
