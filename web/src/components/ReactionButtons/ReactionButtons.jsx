@@ -24,7 +24,7 @@ const iconMap = {
  */
 const ReactionButtons = ({
   initialReactions = { like: 0, love: 0, angry: 0, celebrate: 0 },
-  userReaction = null,
+  userReaction = { like: false, love: false, angry: false, celebrate: false },
   isLoggedIn = false,
 }) => {
   const [reaction, setReaction] = useState(userReaction);

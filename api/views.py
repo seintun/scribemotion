@@ -249,7 +249,7 @@ def all_posts_view(request):
     offset = int(request.GET.get("offset", 0))
     limit = int(request.GET.get("limit", 5))
     filter = request.GET.get("filter", "all")
-    username = request.GET.get("user", "")
+    username = request.GET.get("username", "")
 
     author_id = get_user_by_username(username)
     if filter == "user" and not author_id:

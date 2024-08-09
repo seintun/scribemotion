@@ -8,8 +8,7 @@ import { Register } from "./containers/Register";
 import { Login } from "./containers/Login";
 import { Homepage } from "./containers/Homepage";
 import { ProfilePage } from "./containers/ProfilePage";
-
-// import HelloScribeMotion from "./components/HelloScribemotion";
+import { PostPage } from "./containers/PostPage";
 
 const theme = createTheme();
 
@@ -21,7 +20,6 @@ const App: React.FC = () => {
           <Router>
             <MenuAppBar />
             <Routes>
-              {/* <Route path="/" element={<HelloScribeMotion />} /> */}
               <Route path="/" element={<Homepage defaultFilter="all" />} />
               <Route
                 path="/profile/:username"
@@ -29,6 +27,7 @@ const App: React.FC = () => {
               />
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/post/:postId" element={<PostPage />} />
             </Routes>
           </Router>
         </SnackbarProvider>

@@ -21,7 +21,7 @@ const Homepage = ({ defaultFilter = "all" }) => {
     data,
     fetchData: fetchAllPosts,
   } = useApi(
-    `/posts?offset=${offset}&limit=${limit}&filter=${filter}&user=${currentUser}`,
+    `/posts?offset=${offset}&limit=${limit}&filter=${filter}&username=${currentUser}`,
     "get"
   );
 

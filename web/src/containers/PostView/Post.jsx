@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import { AnalysisCard } from "../../components/AnalysisCard";
 import { ConfirmDialog, PopupDialog } from "../../components/Dialog";
@@ -12,6 +13,7 @@ const Post = ({
   currentUser,
   removeDeletedPost,
 }) => {
+  const navigate = useNavigate();
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [isEditDialogOpen, setEditDialogOpen] = useState(false);
@@ -20,8 +22,8 @@ const Post = ({
   // Actions available based on logged in user and post author
   const avaliableActionsList =
     isLoggedIn && currentUser === postDetails.author__username
-      ? ["Analyze", "Edit", "Delete"]
-      : ["Analyze"];
+      ? ["View Post", "Analyze", "Edit", "Delete"]
+      : ["View Post", "Analyze"];
 
   const { data, fetchData: analyzeSentiment } = useApi(
     "/analyze-sentiment/",
@@ -45,7 +47,9 @@ const Post = ({
 
   // Handle menu item click for ActionMenuButton
   const handleMenuItemClick = (menuItem) => {
-    if (menuItem === "Analyze") {
+    if (menuItem === "View Post") {
+      navigate(`/post/${postDetails.id}`);
+    } else if (menuItem === "Analyze") {
       setShowAnalysis(true);
       analyzeSentiment({ text: postDetails.text });
     } else if (menuItem === "Delete") {

@@ -20,7 +20,7 @@ const ProfilePage = ({ defaultFilter = "user" }) => {
     data,
     fetchData: fetchAllPosts,
   } = useApi(
-    `/posts?offset=${offset}&limit=${limit}&filter=${filter}&user=${
+    `/posts?offset=${offset}&limit=${limit}&filter=${filter}&username=${
       username ?? currentUser
     }`,
     "get"
