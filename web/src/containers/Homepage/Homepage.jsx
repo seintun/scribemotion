@@ -5,7 +5,7 @@ import useAuthContext from "../../hooks/useAuth";
 import useApi from "../../hooks/useApi";
 import { EmptyPage } from "../../components/EmptyPage";
 import { SelectDropdown } from "../../components/SelectDropdown";
-import { PostPage } from "../PostPage";
+import { PostView } from "../PostView";
 
 const Homepage = ({ defaultFilter = "all" }) => {
   const navigate = useNavigate();
@@ -70,7 +70,7 @@ const Homepage = ({ defaultFilter = "all" }) => {
           handleFilterChange={handleFilterChange}
         />
       )}
-      <PostPage
+      <PostView
         data={posts}
         fetchMorePosts={fetchMorePosts}
         hasMore={hasMore}

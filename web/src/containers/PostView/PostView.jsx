@@ -3,7 +3,7 @@ import { Badge, CircularProgress, Typography } from "@mui/material";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Post from "./Post";
 
-const PostPage = ({
+const PostView = ({
   data,
   fetchMorePosts,
   hasMore,
@@ -41,4 +41,4 @@ const PostPage = ({
   </InfiniteScroll>
 );
 
-export default PostPage;
+export default PostView;

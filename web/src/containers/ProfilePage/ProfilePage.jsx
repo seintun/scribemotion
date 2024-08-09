@@ -4,7 +4,7 @@ import { LinearProgress, Paper, Typography } from "@mui/material";
 import useAuthContext from "../../hooks/useAuth";
 import useApi from "../../hooks/useApi";
 import { EmptyPage } from "../../components/EmptyPage";
-import { PostPage } from "../PostPage";
+import { PostView } from "../PostView";
 
 const ProfilePage = ({ defaultFilter = "user" }) => {
   const { username } = useParams();
@@ -51,7 +51,7 @@ const ProfilePage = ({ defaultFilter = "user" }) => {
       <Typography variant="h5" align="center">
         {username ?? currentUser}'s Posts
       </Typography>
-      <PostPage
+      <PostView
         data={posts}
         fetchMorePosts={fetchMorePosts}
         hasMore={hasMore}
