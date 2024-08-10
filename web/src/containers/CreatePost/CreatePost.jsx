@@ -4,10 +4,17 @@ import { PostForm } from "../../components/PostForm";
 import { useAuthContext } from "../../context/AuthContext";
 import useApi from "../../hooks/useApi";
 
-const CreatePost = ({ method, postDetails, handleDismiss, ...props }) => {
+const CreatePost = ({
+  endpoint = "/post/",
+  method,
+  postDetails,
+  handleDismiss,
+  postId = "",
+  ...props
+}) => {
   const { currentUser } = useAuthContext();
-  const { fetchData: createPost } = useApi(`/post/`, "post");
-  const { fetchData: editPost } = useApi(`/post/`, "put");
+  const { fetchData: createPost } = useApi(endpoint, "post");
+  const { fetchData: editPost } = useApi(endpoint, "put");
 
   const [formData, setFormData] = useState({
     title: "",
@@ -40,7 +47,7 @@ const CreatePost = ({ method, postDetails, handleDismiss, ...props }) => {
 
     const postData = {
       ...formData,
-      post_id: postDetails?.id,
+      post_id: postId || postDetails?.id,
       username: currentUser,
     };
 

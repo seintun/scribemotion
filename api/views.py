@@ -426,13 +426,7 @@ def create_comment_view(request):
         text = data.get("text")
 
         # Validate required fields
-        if (
-            not post_id
-            or not username
-            or not title
-            or not subheader
-            or not text
-        ):
+        if not post_id or not username or not title or not subheader or not text:
             return Response(
                 {
                     "error": "post_id, username, title, subheader, and text are required."
@@ -486,14 +480,52 @@ def get_comments_view(request):
                 {"error": "Post not found."}, status=status.HTTP_404_NOT_FOUND
             )
 
-        comments = Comment.objects.filter(post=post)
+        comments = Comment.objects.filter(post=post).order_by("-created_at")
         serializer = CommentSerializer(comments, many=True)
         serialized_data = serializer.data
 
         # Update each comment with the author's username
         for comment in serialized_data:
-            author_id = comment['author']
+            author_id = comment["author"]
             author = User.objects.get(id=author_id)
-            comment['author__username'] = author.username
+            comment["author__username"] = author.username
 
         return Response(serialized_data, status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+def create_comment(request):
+    if request.method == "POST":
+        # Extract post data from the request
+        data = request.data
+        post_id = data.get("post_id")
+        if not post_id:
+            return Response(
+                {"error": "post_id is required."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Retrieve the post and user
+        post = Post.objects.filter(id=post_id).first()
+        if not post:
+            return Response(
+                {"detail": "Post not found."}, status=status.HTTP_404_NOT_FOUND
+            )
+        data["post"] = post
+
+        username = data.get("username")
+        data["author"] = get_user_by_username(username)
+
+        if not data["author"]:
+            return Response(
+                {"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Serialize and save the new comment
+        serializer = CommentSerializer(data=data)
+        print("data", data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
