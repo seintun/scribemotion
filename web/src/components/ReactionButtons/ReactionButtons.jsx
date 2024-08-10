@@ -66,7 +66,11 @@ const ReactionButtons = ({
       {Object.keys(counts).map((type) => {
         const Icon = iconMap[type];
         return (
-          <Badge key={type} badgeContent={counts[type]} color="primary">
+          <Badge
+            key={type}
+            badgeContent={counts[type]}
+            color={reaction[type] ? "primary" : "inherit"}
+          >
             <Tooltip title={isLoggedIn ? "" : "Please log in to react"}>
               <span>
                 <IconButton

@@ -30,6 +30,7 @@ const PostView = ({
           sx={{ left: 15, top: 15 }}
         />
         <Post
+          key={post.id}
           initialPostDetails={post}
           isLoggedIn={isLoggedIn}
           currentUser={currentUser}

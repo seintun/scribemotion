@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import moment from "moment";
 import Card from "@mui/material/Card";
 import {
@@ -32,6 +33,14 @@ const PostDetails = ({
     user_reacted,
   } = postDetails;
 
+  const author_createdby_subheader = (
+    <>
+      {isComment ? "commented" : "posted"} by{" "}
+      <Link to={`/profile/${author__username}`}>{author__username}</Link> on{" "}
+      {moment(created_at).format("MM/DD/YYYY HH:mm:ss")}
+    </>
+  );
+
   return (
     <Card
       key={id}
@@ -43,9 +52,11 @@ const PostDetails = ({
     >
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }}>
-            {author__username.charAt(0)}
-          </Avatar>
+          <Link to={`/profile/${author__username}`}>
+            <Avatar sx={{ bgcolor: red[500] }}>
+              {author__username.charAt(0)}
+            </Avatar>
+          </Link>
         }
         action={
           <ActionMenuButton
@@ -54,10 +65,7 @@ const PostDetails = ({
           />
         }
         title={title}
-        subheader={`${isComment ? "commented" : "posted"}
-         by ${author__username} on ${moment(created_at).format(
-          "MM/DD/YYYY HH:mm:ss"
-        )}`}
+        subheader={author_createdby_subheader}
       />
       <CardContent>
         <Typography variant="body2" color="text.primary">
