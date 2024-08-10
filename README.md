@@ -5,7 +5,8 @@ Offered by Harvard Summer School (Summer 2024)
 ## Final Project by [Sein Tun](https://github.com/seintun)
 
 Explore the project on [GitHub](https://github.com/seintun/scribemotion).
-Video [YouTube](https://harvard.zoom.us/rec/share/Nz7wKr-a-5b1r41jpBgrqWPiwZnzJLc-ypVotlj8-xnkaoo1ZSa8sopz2ypfWQGX.KBz253Djfh-iVU4R?startTime=1723261695000).
+Video [Zoom](https://harvard.zoom.us/rec/share/Nz7wKr-a-5b1r41jpBgrqWPiwZnzJLc-ypVotlj8-xnkaoo1ZSa8sopz2ypfWQGX.KBz253Djfh-iVU4R?startTime=1723261695000).
+Video [YouTube](https://youtu.be/82grLwW1Z38)
 
 ## About The Project
 
