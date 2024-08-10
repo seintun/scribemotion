@@ -1,5 +1,5 @@
 import React from "react";
-import { Badge, CircularProgress, Typography } from "@mui/material";
+import { Badge, LinearProgress, Typography } from "@mui/material";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Post from "./Post";
 
@@ -7,7 +7,6 @@ const PostView = ({
   data,
   fetchMorePosts,
   hasMore,
-  removeDeletedPost,
   isLoggedIn,
   currentUser,
 }) => (
@@ -15,7 +14,7 @@ const PostView = ({
     dataLength={data.length}
     next={fetchMorePosts}
     hasMore={hasMore}
-    loader={<CircularProgress />}
+    loader={<LinearProgress />}
     endMessage={
       <Typography variant="body2" color="textSecondary" align="center">
         You have reached the end of the feed.

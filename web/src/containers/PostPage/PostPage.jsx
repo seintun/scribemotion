@@ -68,6 +68,7 @@ const PostPage = () => {
         </Typography>
       ) : (
         commentData.map((comment) => (
+          // The reusable Post component is used to display comments
           <Post
             key={comment.id}
             initialPostDetails={comment}
