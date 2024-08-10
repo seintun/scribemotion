@@ -463,7 +463,7 @@ def create_comment_view(request):
 
 
 @api_view(["POST"])
-def get_comments_view(request):
+def all_comments_view(request):
     if request.method == "POST":
         data = request.data
         post_id = data.get("post_id")

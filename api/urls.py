@@ -17,6 +17,6 @@ urlpatterns = [
     path("post/", views.post_view, name="create-post"),
     path("post/<uuid:post_id>/", views.post_view, name="post-detail"),
     path("reaction/", views.reaction_view, name="create-reaction"),
+    path("comments/", views.all_comments_view, name="all-comments"),
     path("create-comment/", views.create_comment_view, name="create-comment"),
-    path("comments/", views.get_comments_view, name="comments"),
 ]
