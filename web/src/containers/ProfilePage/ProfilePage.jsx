@@ -28,6 +28,7 @@ const ProfilePage = ({ defaultFilter = "user" }) => {
 
   useEffect(() => {
     fetchAllPosts();
+    // eslint-disable-next-line
   }, [offset, filter, currentUser]);
 
   useEffect(() => {

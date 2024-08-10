@@ -33,6 +33,7 @@ const Homepage = ({ defaultFilter = "all" }) => {
 
   useEffect(() => {
     fetchAllPosts();
+    // eslint-disable-next-line
   }, [offset, filter, currentUser]);
 
   useEffect(() => {

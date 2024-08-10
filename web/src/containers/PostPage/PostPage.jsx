@@ -31,6 +31,7 @@ const PostPage = () => {
       post_id: postId,
       username: currentUser,
     });
+    // eslint-disable-next-line
   }, [postId, currentUser]);
 
   useEffect(() => {
