@@ -24,7 +24,6 @@ const PostDetails = ({
   const {
     id,
     author__username,
-    avatar,
     created_at,
     title,
     subheader,
@@ -43,7 +42,11 @@ const PostDetails = ({
       }}
     >
       <CardHeader
-        avatar={<Avatar sx={{ bgcolor: red[500] }}>{avatar}</Avatar>}
+        avatar={
+          <Avatar sx={{ bgcolor: red[500] }}>
+            {author__username.charAt(0)}
+          </Avatar>
+        }
         action={
           <ActionMenuButton
             menuItems={menuItems}

@@ -13,7 +13,6 @@ const CreatePost = ({ method, postDetails, handleDismiss, ...props }) => {
     title: "",
     subheader: "",
     text: "",
-    avatar: "",
   });
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
@@ -24,7 +23,6 @@ const CreatePost = ({ method, postDetails, handleDismiss, ...props }) => {
         title: postDetails.title || "",
         subheader: postDetails.subheader || "",
         text: postDetails.text || "",
-        avatar: postDetails.avatar || "",
       });
     }
   }, [method, postDetails]);
@@ -61,7 +59,6 @@ const CreatePost = ({ method, postDetails, handleDismiss, ...props }) => {
         title: "",
         subheader: "",
         text: "",
-        avatar: "",
       });
 
       // Dismiss the dialog

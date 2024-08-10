@@ -128,7 +128,6 @@ def format_single_post(post, author_id):
     reaction_type = reaction.reaction if reaction else None
     return {
         "id": post["id"],
-        "avatar": post["avatar"],
         "author__username": post["author__username"],
         "title": post["title"],
         "subheader": post["subheader"],
@@ -260,7 +259,6 @@ def all_posts_view(request):
 
     posts = posts_query.select_related("author")[offset : offset + limit].values(
         "id",
-        "avatar",
         "author__username",
         "title",
         "subheader",
@@ -297,7 +295,6 @@ def post_view(request, post_id=None):
             posts_query.select_related("author")
             .values(
                 "id",
-                "avatar",
                 "author__username",
                 "title",
                 "subheader",
@@ -427,7 +424,6 @@ def create_comment_view(request):
         title = data.get("title")
         subheader = data.get("subheader")
         text = data.get("text")
-        avatar = data.get("avatar")
 
         # Validate required fields
         if (
@@ -436,11 +432,10 @@ def create_comment_view(request):
             or not title
             or not subheader
             or not text
-            or not avatar
         ):
             return Response(
                 {
-                    "error": "post_id, username, title, subheader, text, and avatar are required."
+                    "error": "post_id, username, title, subheader, and text are required."
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
@@ -467,7 +462,6 @@ def create_comment_view(request):
             title=title,
             subheader=subheader,
             text=text,
-            avatar=avatar,
         )
         comment.save()
         serializer = CommentSerializer(comment)

@@ -32,15 +32,6 @@ const PostForm = ({ formData, handleChange, handleSubmit }) => (
       multiline
       rows={4}
     />
-    <TextField
-      label="Avatar"
-      name="avatar"
-      value={formData.avatar}
-      onChange={handleChange}
-      required
-      fullWidth
-      margin="normal"
-    />
     <Button type="submit" variant="contained" color="primary" fullWidth>
       Submit
     </Button>
