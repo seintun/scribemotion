@@ -209,14 +209,6 @@ def logout_view(request):
         )
 
 
-@api_view(["GET"])
-def hello_scribemotion(request: HttpRequest) -> HttpResponse:
-    """
-    A view function that returns a response with a Hello message.
-    """
-    return Response({"message": "Hello, ScribeMotion!"})
-
-
 @api_view(["POST"])
 def sentiment_analysis_view(request):
     """
