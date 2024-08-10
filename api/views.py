@@ -352,6 +352,12 @@ def post_view(request, post_id=None):
 
 @api_view(["POST"])
 def reaction_view(request):
+    """
+    A view function that allows authenticated users to react to a post.
+    Check if there is an existing reaction, if so, update the reaction.
+    Otherwise, create a new reaction.
+    Will validate the required fields and return an error if any are missing.
+    """
     if request.method == "POST":
         # Extract reaction data from the request
         data = request.data
@@ -365,14 +371,14 @@ def reaction_view(request):
         )
         author = get_user_by_username(username)
 
-        # Validate the data
+        # Validate the required fields
         if not username or not post_id or not new_reaction:
             return Response(
                 {"error": "Missing required fields."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        # Retrieve the post
+        # Retrieve the post by post_id
         try:
             post = Post.objects.get(id=post_id)
         except Post.DoesNotExist:
@@ -381,20 +387,14 @@ def reaction_view(request):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        # Check if the previous reaction exists
-        if not previous_reaction:
-            # Create a new reaction
-            Reaction.objects.create(post=post, user=author, reaction=new_reaction)
-            return Response(
-                {"message": "Reaction created."},
-                status=status.HTTP_201_CREATED,
-            )
-
+        # Update the reaction if the previous reaction exists
         try:
+            # Get the previous reaction
             reaction = Reaction.objects.get(
                 post=post, user=author, reaction=previous_reaction
             )
-            if reaction.reaction == new_reaction:
+            # Check if the previous reaction matches
+            if reaction.reaction != new_reaction:
                 reaction.reaction = new_reaction
                 reaction.save()
                 return Response(
@@ -402,15 +402,16 @@ def reaction_view(request):
                     status=status.HTTP_200_OK,
                 )
         except Reaction.DoesNotExist:
-            # Create a new reaction
+            # Create a new reaction if the previous reaction does not exist
             Reaction.objects.create(post=post, user=author, reaction=new_reaction)
             return Response(
                 {"message": "Reaction created."},
                 status=status.HTTP_201_CREATED,
             )
 
+        # Fallback error if all else fails
         return Response(
-            {"error": "Previous reaction not found or does not match."},
+            {"error": "An error occurred."},
             status=status.HTTP_400_BAD_REQUEST,
         )
 
