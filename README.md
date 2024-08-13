@@ -86,11 +86,18 @@ The React frontend is structured to promote reusability and efficient state mana
    python3 manage.py makemigrations
    python3 manage.py migrate
    ```
-6. Start the Django server:
+6. Downloads the necessary corpora for TextBlob library.
+
+- Corpora are large collections of textual data that are used for natural language processing.
+  ```sh
+  python -m textblob.download_corpora
+  ```
+
+7. Start the Django server:
    ```sh
    python3 manage.py runserver
    ```
-7. You can visit the admin panel at:
+8. You can visit the admin panel at:
    ```
    http://localhost:8000/admin
    ```
