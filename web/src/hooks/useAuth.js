@@ -77,7 +77,7 @@ const useAuth = () => {
       const { message, data: { username: registeredUsername } } = response.data;
       setMessage(message);
       showSuccess(`Welcome to the community, ${registeredUsername}!`);
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       handleError(error);
     }
